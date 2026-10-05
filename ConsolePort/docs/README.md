@@ -131,6 +131,39 @@ See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md]
 
 Install [FormFreedom](https://github.com/SuttonX/FormFreedom) separately if you want automatic form cancellation for its supported interactions. FormFreedom works independently on desktop and alongside ConsolePortLK. Its cancellation logic is not bundled into Enhanced; the integration here supports controller selection and correct bar-state reconciliation.
 
+## Copying settings between characters
+
+ConsolePortLK Enhanced stores some settings for the whole account and others per character.  **Controller selection, calibration, and general addon/UI settings are shared within the same account.**  Controller bindings are stored per character and specialization; controller-bar layouts, layout-specific size/scale preferences, mouse settings, and utility-ring contents also have character-specific storage.
+
+### Copy controller bindings in game
+
+1. Log in to the **source character** and activate the specialization whose bindings you want to copy.
+2. Open `/cp config`, select **Bindings**, and click **Save**.  This saves the current bindings and records a non-default binding profile in the account's shared import list.
+3. Log in to the **destination character**, activate the specialization you want to configure, and open `/cp config` → **Bindings**.
+4. Click **Import**, or **Import / Export** if ConsolePortAdvanced is enabled.
+5. Select the saved source-character/specialization profile, then click **Import**.  Review the bindings and click **Save** in the main settings window.  Repeat for another specialization if needed.
+
+Import copies bindings into the destination's active specialization; later character-specific binding edits do not change the source character's bindings.  It does **not** copy controller-bar layout settings or place the source character's spells onto the destination's action bars.
+
+If the source profile is missing, make sure you clicked **Save** on the source character.  Unmodified default bindings are not exported as a separate character profile—use the matching controller preset instead.  Identical saved binding sets can also be deduplicated, so an equivalent profile may appear under another character's name.  For transfers between different accounts, ConsolePortAdvanced provides binding-string export/import from the same window.
+
+### Copy character-specific settings using Windows File Explorer
+
+Use this method when you also want the source character's bar layouts and other character-specific settings.
+
+1. Log in to the source character, save your desired settings, then **fully close WoW** so its saved variables are written to disk.  If the destination character has never logged in, log in once and close WoW to create its folders.
+2. Open your WoW folder, then `WTF/Account/ACCOUNT/REALM/SOURCECHARACTER/SavedVariables/`.  Replace ACCOUNT, REALM, and SOURCECHARACTER with the actual folder names.
+3. Back up the destination's existing ConsolePort files from `WTF/Account/ACCOUNT/REALM/DESTINATIONCHARACTER/SavedVariables/`.
+4. Copy these files from the source's **character** SavedVariables folder into the destination's **character** SavedVariables folder, replacing the corresponding files:
+   - `ConsolePort.lua`: controller bindings for saved specializations, mouse settings, and utility-ring contents.
+   - `ConsolePortBar.lua`: controller-bar configuration, including saved layout-specific preferences.
+   - Optional `ConsolePortLoader.lua`, if present: the character's ConsolePort loader binding.
+5. Start WoW and log in to the destination character.  Check both specializations, bar layouts, mouse behavior, and utility-ring entries.  Adjust entries that refer to source-specific spells, items, or macros.
+
+Copy the `.lua` files; the `.lua.bak` files are backups.  **Do not copy the entire WTF folder or overwrite the account-level `WTF/Account/ACCOUNT/SavedVariables/ConsolePort.lua` for a same-account character transfer.**  The account-level file is different from the character-level file even though both are named ConsolePort.lua.
+
+These methods copy addon settings and bindings, not the character's server-stored spells/action-bar contents.  The file-copy method replaces the destination's corresponding settings rather than merging them.  The required clean-install reset above applies only when first switching from an older ConsolePort installation to Enhanced; **do not delete your saved settings just to copy them between characters.**
+
 ## Commands
 
 | Command | Purpose |
