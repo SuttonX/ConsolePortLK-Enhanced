@@ -296,7 +296,8 @@ function SetupSecureSnippets(button)
 		-- not only the modifier that happens to be held at this instant.
 		-- This preserves held-modifier visuals while preventing the hidden
 		-- base state from retaining a stale stealth-page action slot.
-		for _, state in pairs(States) do
+		local pageStates = newtable("CTRL-SHIFT-", "CTRL-", "SHIFT-", "")
+		for _, state in pairs(pageStates) do
 			local kind = self:GetAttribute(format("labtype-%s", state)) or "empty"
 			local value = self:GetAttribute(format("labaction-%s", state))
 			if kind == "action" and type(value) == "number" and value <= 12 then
