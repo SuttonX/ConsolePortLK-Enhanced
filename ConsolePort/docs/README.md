@@ -1,6 +1,6 @@
-# ConsolePortLK Enhanced
+# ConsolePortLK Enhanced — WoW WotLK 3.3.5a Controller Addon
 
-**Controller gameplay for World of Warcraft: Wrath of the Lich King 3.3.5a.**
+**Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced and WoWPadX.**
 
 An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/ConsolePortLK), based on release **1.5.0-rc2**. It retains the original controller interface and adds improvements to cooldown displays, action-bar layouts, settings navigation, and saved layout preferences. ConsolePortLK itself backports [Sebastian Lindfors’s ConsolePort](https://github.com/seblindfors/ConsolePort) 1.9.17.
 
@@ -22,6 +22,8 @@ The improvements use shared addon code and are expected to work with other suppo
 
 ### Xbox mapping for another input mapper
 
+> **NOT REQUIRED if you use WoWPadX.** WoWPadX supplies the controller mappings for its selected profile; you do not need to enter the mappings below manually. Select your modifier profile in WoWPadX and complete ConsolePortLK’s normal calibration. This table is only a reference for configuring another input mapper, such as Steam Input or GameNative.
+
 This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching the Xbox configuration used during development. It is a physical-input mapping, not a list of the in-game actions assigned to those inputs. Calibrate with `/cp recalibrate` after selecting this profile or changing mapper settings.
 
 | Xbox control | Keyboard or mouse output |
@@ -34,26 +36,18 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 | D-pad right | F2 |
 | D-pad down | F3 |
 | D-pad left | F4 |
-| View / Back | F5 |
-| Menu / Start | F6 |
+| View / Back (SELECT) | F5 |
+| Menu (START) | F6 |
 | LB, left bumper | F7 |
 | RB, right bumper | F8 |
 | LT, left rear trigger | Hold **Left Shift** |
 | RT, right rear trigger | Hold **Left Ctrl** |
-| Left stick up | Hold W |
-| Left stick left | Hold A |
-| Left stick down | Hold S |
-| Left stick right | Hold D |
-| Left stick diagonals | Hold the corresponding two movement keys together |
+| Left stick movement | WASD |
 | Left stick click, L3 | Left mouse button |
-| Right stick up | Move mouse up |
-| Right stick right | Move mouse right |
-| Right stick down | Move mouse down |
-| Right stick left | Move mouse left |
-| Right stick diagonals | Combine the corresponding mouse movements |
+| Right stick movement | Mouse movement |
 | Right stick click, R3 | Right mouse button |
 | Xbox / Guide button, if exposed to the mapper | Numpad multiply (`*`) |
-| Share button, if exposed as the mapper’s Misc1 input | Numpad add (`+`) |
+| Share / capture button (newer Xbox controllers), if exposed as Misc1 | Numpad add (`+`) |
 | Elite right paddle 1, if exposed independently | Numpad 0 |
 | Elite right paddle 2, if exposed independently | Numpad 1 |
 | Elite left paddle 1, if exposed independently | Numpad 2 |
@@ -61,7 +55,7 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 
 Use ordinary held inputs: pressing a trigger sends modifier-down, releasing it sends modifier-up. Holding both triggers must produce **Shift + Ctrl** simultaneously. Avoid toggle or turbo mode for movement, modifiers, and stick clicks. Map the right stick to relative mouse movement and give both sticks an appropriate dead zone.
 
-Numpad multiply and add are distinct from typing `Shift+8` or `Shift+=`. Guide/Share availability depends on the controller and operating system. Many Elite configurations expose paddles as duplicates of existing buttons; the separate paddle outputs above apply only when the mapper can see independent paddle inputs. Standard Xbox controllers do not have paddles.
+Numpad multiply and add are distinct from typing `Shift+8` or `Shift+=`. View / Back is the button commonly called SELECT; Menu / Start is START. The Share button is a separate screenshot/video capture button on newer Xbox controllers, not SELECT. Guide/Share availability depends on the controller and operating system. Many Elite configurations expose paddles as duplicates of existing buttons; the separate paddle outputs above apply only when the mapper can see independent paddle inputs. Standard Xbox controllers do not have paddles.
 
 **Optional 16-way movement:** WoWPadX additionally sends H for the horizontal-dominant intermediate diagonal sectors and V for the vertical-dominant sectors. These are supplementary sector outputs, not replacements for WASD. A basic eight-direction WASD setup can omit them; match the addon’s movement configuration to the mapper’s capabilities. WoWPadX’s automatic walk/run handling uses additional feedback logic, so copying the physical mappings does not reproduce every WoWPadX feature.
 
@@ -95,12 +89,22 @@ See [CHANGELOG.md](CHANGELOG.md) for the retained changes and [UPSTREAM-CHANGES.
 
 ## Installation
 
-1. Download the install ZIP attached to this fork’s GitHub release. GitHub’s automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
-2. Extract the eight addon folders into `World of Warcraft/Interface/AddOns/`: `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
-3. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
-4. Restart the client, enable the modules you need, select your controller preset, and complete calibration.
+### Required clean install when first switching to Enhanced
 
-**Upgrading from our previous development build: keep SavedVariables; restart the client after installing this package.** Keep a backup of your existing settings. This fork replaces the same eight addon folders as ConsolePortLK; do not install a second renamed copy alongside them. The optional on-screen keyboard is disabled by default on a fresh configuration.
+**For your first installation of ConsolePortLK Enhanced, remove all previous ConsolePort / ConsolePortLK addon folders and their saved settings before installing this version.** Existing saved bindings and settings can override Enhanced's fresh defaults.
+
+1. **Fully close WoW.**
+2. In `World of Warcraft/Interface/AddOns/`, delete all addon folders belonging to previous ConsolePort or ConsolePortLK installations, including their modules and any renamed copies. The standard folders are `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
+3. Delete the ConsolePort / ConsolePortLK SavedVariables files, including both `.lua` and `.lua.bak` copies, from **both** locations:
+   - Account settings: `WTF/Account/<ACCOUNT>/SavedVariables/`
+   - Character settings: `WTF/Account/<ACCOUNT>/<REALM>/<CHARACTER>/SavedVariables/`
+   Remove files belonging to ConsolePort and its modules (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used a previous installation. Do not delete unrelated addons' settings or the entire WTF folder.
+4. Download the install ZIP attached to this fork's GitHub release. GitHub's automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
+5. Extract the eight addon folders directly into `World of Warcraft/Interface/AddOns/`.
+6. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
+7. Start WoW, enable the modules you need, select your controller preset, and complete calibration.
+
+**Initial switch to Enhanced: SavedVariables DELETE; CLIENT RESTART.** This resets old ConsolePort bindings, calibration, and layout preferences, so configure them again. This is the initial-install requirement, not an instruction to erase settings for every future update. The optional on-screen keyboard is disabled by default on a fresh configuration.
 
 ### Optional druid form support
 
