@@ -116,10 +116,7 @@ See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md]
 
 1. **Fully close WoW.**
 2. In `World of Warcraft/Interface/AddOns/`, delete all addon folders belonging to previous ConsolePort or ConsolePortLK installations, including their modules and any renamed copies. The standard folders are `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
-3. Delete the ConsolePort / ConsolePortLK SavedVariables files, including both `.lua` and `.lua.bak` copies, from **both** locations:
-   - Account settings: `WTF/Account/<ACCOUNT>/SavedVariables/`
-   - Character settings: `WTF/Account/<ACCOUNT>/<REALM>/<CHARACTER>/SavedVariables/`
-   Remove files belonging to ConsolePort and its modules (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used a previous installation. Do not delete unrelated addons' settings or the entire WTF folder.
+3. Delete all ConsolePort / ConsolePortLK SavedVariables files, including `.lua` and `.lua.bak` copies, from **both your account and character SavedVariables folders**: `WTF/Account/ACCOUNT/SavedVariables/` and `WTF/Account/ACCOUNT/REALM/CHARACTER/SavedVariables/`. Replace ACCOUNT, REALM, and CHARACTER with your actual folder names. Remove only ConsolePort-related files (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used the previous addon. **Do not delete unrelated settings or the entire WTF folder.**
 4. Download the install ZIP attached to this fork's GitHub release. GitHub's automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
 5. Extract the eight addon folders directly into `World of Warcraft/Interface/AddOns/`.
 6. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
