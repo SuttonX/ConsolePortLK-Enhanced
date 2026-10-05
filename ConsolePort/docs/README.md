@@ -6,7 +6,7 @@ An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/C
 
 This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report Enhanced-specific issues here rather than to the original ConsolePort project. Original authorship and the Artistic License 2.0 are preserved.
 
-> **Publication candidate:** Enhanced 1.0.0-rc1, based on development build v161. The main gameplay improvements were tested in game; v161’s final Orthodox optional-button geometry adjustment has not yet received an in-game test. See [testing status](TESTING.md).
+> **Version 1.0.0**, based on development build v161. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
 
 ## Controller mapper required
 
@@ -72,20 +72,41 @@ The trigger profile above is our tested configuration; it is **not** WoWPadX’s
 
 Mapping sources: [WoWPadX KeybindDefaults.h](https://github.com/leoaviana/WoWpadX/blob/4c435e0c6a9247fe50dc0dac0f23796058393c4a/WoWpadX/KeybindDefaults.h) and [InputMapper.cpp](https://github.com/leoaviana/WoWpadX/blob/4c435e0c6a9247fe50dc0dac0f23796058393c4a/WoWpadX/InputMapper.cpp). These links pin the inspected version so the documented mappings remain traceable.
 
-## Improvements
+## What changed from the original ConsolePortLK
 
-- Readable cooldown numbers with urgency colors and sizing that follows the action button. Cooldown text and swipes refresh across action pages and modifier layers.
-- Minimal-layout cooldown satellites filter short global cooldowns, update when modifier layers change, and restore their normal labels when a cooldown expires.
-- Triple-layout wings track their own modifier actions and retain their layout geometry.
-- Layout-specific size, scale, and presentation preferences survive switching layouts and logging out.
-- Settings opens on General initially, remembers the current subsection within a session, and restores it when returning from Bindings or reopening the panel.
-- The integrated Action Bars editor remains populated. Saving settings uses the final difference from the loaded state to decide whether a reload is required; reverting an edit before saving does not itself require a reload.
-- Optional bar-button checkbox behavior follows the original addon’s presence/absence contract; optional indicators start unchecked on a fresh configuration.
-- Shared fixes apply across controller presets. Controller artwork is retained from the official release.
-- Binding updates avoid redundant writes, and callback/nameplate updates avoid unnecessary repeated work. No independent performance benchmark is claimed.
-- Optional integration lets ConsolePort’s interface cursor select [FormFreedom](https://github.com/SuttonX/FormFreedom) menu helpers without leaving the displayed bar stuck on a modifier layer.
+These changes are compared with the original **ConsolePortLK 1.5.0-rc2**, rather than earlier Enhanced development builds.
 
-See [CHANGELOG.md](CHANGELOG.md) for the retained changes and [UPSTREAM-CHANGES.md](UPSTREAM-CHANGES.md) for the complete source-file inventory and review notes.
+### New features
+
+- **Cooldown satellites on every layout except Triple:** abilities on inactive modifier bars can appear while cooling down, without holding those modifiers. Triple retains its permanently visible modifier bars.
+- **Inactive-bar cooldown controls:** choose up to one hour, ten minutes, or five minutes remaining, or turn these displays off. Short global cooldowns are excluded.
+- **Separate saved layout profiles:** size, scale, artwork, and positioning preferences are retained independently when switching layouts and logging out.
+- **Optional FormFreedom integration:** the controller cursor can select supported FormFreedom menu helpers, and the displayed modifier bar is reconciled afterward. Automatic druid form cancellation remains in the separate [FormFreedom addon](https://github.com/SuttonX/FormFreedom).
+
+### Fixes and improvements
+
+- **Druid-form action-bar glitches:** improved action-page and action-identity refreshes when switching forms or bonus bars, so cooldown text and swipes follow the correct actions. Added spell-cooldown fallback for cases where the client temporarily reports an empty action-slot cooldown after a form/page transition.
+- **Modifier-bar updates:** cooldown displays refresh when modifiers are pressed or released. Triple wings track their own modifier actions rather than inheriting the currently displayed main-bar layer.
+- **Cooldown rendering:** reworked the original countdown renderer for reliable updates, proportional sizing, readable placement, whole-second/minute formatting, urgency colors, and coordination with OmniCC to avoid duplicate text.
+- **Satellite display behavior:** cooldown satellites disappear at expiry, restore their normal labels, and handle hover and overlapping modifier layers consistently.
+- **Scalable bar geometry:** improved Minimal button, satellite, artwork, highlight, and border proportions; retained native layout geometry where appropriate.
+- **Settings navigation:** ordinary first launch selects General and its heading. Returning from Bindings or reopening settings restores the subsection selected during that session, including Advanced and Action Bars.
+- **Action Bars configuration:** improved the populated integrated editor, optional-button checkbox behavior, and layout presentation restoration.
+- **Save and reload handling:** reload prompts reflect the final difference from the loaded settings. Reverting an edit before saving does not itself require a reload.
+- **Input reliability:** reduced redundant binding writes and improved calibrated stick-click fallback, binding-view focus, and cursor click handling.
+- **Update processing:** reduced repeated callback work and nameplate polling. No independently measured performance gain is claimed.
+- **Smaller fixes:** removed debug chat noise, corrected an optional specialization API call, and corrected raid-marker labels in the keyboard editor.
+
+### Fresh-install defaults and documentation
+
+- Pixel bridge and controller nameplates are enabled by default; the optional on-screen keyboard and double-modifier-tap behavior are disabled by default.
+- Seven non-Wii controller presets change the fresh Ctrl-modified bottom face-button binding from Extra Action Button to an additional action-bar slot. With the tested Xbox LT/RT profile, this is **RT+A**. Other controller preset bindings and the Wii template retain their original defaults.
+- Optional upper bar indicators begin unchecked on fresh profiles. Their original modifier-label behavior is retained.
+- Added Xbox input mappings for alternative mappers, WoWPadX setup guidance, compatibility notes, source comparison documentation, and testing history.
+
+The reported Prowl/stealth-break cooldown issue could no longer be reproduced in the final tested setup; every possible enemy-caused stealth break has not been independently verified. See [TESTING.md](TESTING.md) for confirmed results and remaining limits.
+
+See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md](UPSTREAM-CHANGES.md) for the complete source-file inventory and review notes.
 
 ## Installation
 
