@@ -1,3 +1,5 @@
+![ConsolePortLK Enhanced — Controller Support and Improved Bars and Cooldowns for WotLK 3.3.5a](assets/banner.png)
+
 # ConsolePortLK Enhanced — WoW WotLK 3.3.5a Controller Addon
 
 **Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced and WoWPadX.**
