@@ -93,6 +93,7 @@ These changes are compared with the original **ConsolePortLK 1.5.0-rc2**, rather
 - **Settings navigation:** ordinary first launch selects General and its heading. Returning from Bindings or reopening settings restores the subsection selected during that session, including Advanced and Action Bars.
 - **Action Bars configuration:** improved the populated integrated editor, optional-button checkbox behavior, and layout presentation restoration.
 - **Save and reload handling:** reload prompts reflect the final difference from the loaded settings. Reverting an edit before saving does not itself require a reload.
+- Fixed the original RT+A default binding, which targeted an Extra Action Button unavailable in WotLK 3.3.5a - a leftover from backporting ConsolePort from newer WoW versions.  It now maps to a usable action-bar slot, with the equivalent correction applied across all relevant controller presets.
 - **Input reliability:** reduced redundant binding writes and improved calibrated stick-click fallback, binding-view focus, and cursor click handling.
 - **Update processing:** reduced repeated callback work and nameplate polling. No independently measured performance gain is claimed.
 - **Smaller fixes:** removed debug chat noise, corrected an optional specialization API call, and corrected raid-marker labels in the keyboard editor.
@@ -100,7 +101,7 @@ These changes are compared with the original **ConsolePortLK 1.5.0-rc2**, rather
 ### Fresh-install defaults and documentation
 
 - Pixel bridge and controller nameplates are enabled by default; the optional on-screen keyboard and double-modifier-tap behavior are disabled by default.
-- Seven non-Wii controller presets change the fresh Ctrl-modified bottom face-button binding from Extra Action Button to an additional action-bar slot. With the tested Xbox LT/RT profile, this is **RT+A**. Other controller preset bindings and the Wii template retain their original defaults.
+- RT+A refers to the tested Xbox LT/RT modifier profile. Other controller preset bindings and the Wii template retain their original defaults.
 - Optional upper bar indicators begin unchecked on fresh profiles. Their original modifier-label behavior is retained.
 - Added Xbox input mappings for alternative mappers, WoWPadX setup guidance, compatibility notes, source comparison documentation, and testing history.
 
