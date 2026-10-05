@@ -1,6 +1,6 @@
-# ConsolePortLK Enhanced
+# ConsolePortLK Enhanced — WoW WotLK 3.3.5a Controller Addon
 
-**Controller gameplay for World of Warcraft: Wrath of the Lich King 3.3.5a.**
+**Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced and WoWPadX.**
 
 An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/ConsolePortLK), based on release **1.5.0-rc2**. It retains the original controller interface and adds improvements to cooldown displays, action-bar layouts, settings navigation, and saved layout preferences. ConsolePortLK itself backports [Sebastian Lindfors’s ConsolePort](https://github.com/seblindfors/ConsolePort) 1.9.17.
 
