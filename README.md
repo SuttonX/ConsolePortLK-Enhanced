@@ -2,7 +2,7 @@
 
 # ConsolePortLK Enhanced — WoW WotLK 3.3.5a Controller Addon
 
-**Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced and WoWPadX.**
+**Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced.**
 
 An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/ConsolePortLK), based on release **1.5.0-rc2**. It retains the original controller interface and adds improvements to cooldown displays, action-bar layouts, settings navigation, and saved layout preferences. ConsolePortLK itself backports [Sebastian Lindfors’s ConsolePort](https://github.com/seblindfors/ConsolePort) 1.9.17.
 
@@ -12,15 +12,15 @@ This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report 
 
 ## Controller mapper required
 
-ConsolePortLK Enhanced is **intended to be used with [WoWPadX](https://github.com/leoaviana/WoWpadX)**, the SDL-based controller-to-keyboard/mouse mapper linked by the original ConsolePortLK project. WoW 3.3.5a does not provide the modern native controller input expected by newer addons.
+Use a controller-to-keyboard/mouse mapper such as **GameNative**, **Steam Input**, **[WoWPadX](https://github.com/leoaviana/WoWpadX)**, or your own compatible mapping setup.  WoW 3.3.5a requires mapped keyboard/mouse input; select the controller preset and calibrate ConsolePortLK to your mapper's outputs.
 
-Another mapper, such as Steam Input or GameNative’s keyboard/mouse mapping, may also work if it produces the same inputs and you calibrate the addon accordingly. These alternatives were not independently tested for this release. Run one mapper at a time to avoid duplicate input.
+The maintainer previously played the original ConsolePortLK successfully on an **AYN Thor using GameNative and a custom mapping setup**.  Enhanced development and testing used WoWPadX.  WoWPadX remains a documented option, with the tested input mappings below; it is not required.  Enhanced has not been separately tested with every mapper/device combination.
 
 ### Tested configuration and compatibility
 
-**Development and in-game testing used an Xbox controller with LT and RT—the rear triggers—configured as the two modifiers.** In the recommended mapping below, LT holds Left Shift and RT holds Left Ctrl.
+**Enhanced development and in-game testing used WoWPadX with an Xbox controller and LT/RT rear triggers as the two modifiers.** In the example mapping below, LT holds Left Shift and RT holds Left Ctrl.
 
-The improvements use shared addon code and are expected to work with other supported controller presets and WoWPadX modifier selections as well. Other controller hardware and every modifier combination have not been individually tested. If something behaves differently, please [report an issue](https://github.com/SuttonX/ConsolePortLK-Enhanced/issues) and include your controller, selected controller preset, mapper and version, modifier assignments, action-bar layout, client version, and steps to reproduce it. Screenshots and Lua errors help with display or navigation problems.
+The improvements use shared addon code and are expected to work with other supported controller presets and compatible modifier mappings as well. Other controller hardware and every modifier combination have not been individually tested. If something behaves differently, please [report an issue](https://github.com/SuttonX/ConsolePortLK-Enhanced/issues) and include your controller, selected controller preset, mapper and version, modifier assignments, action-bar layout, client version, and steps to reproduce it. Screenshots and Lua errors help with display or navigation problems.
 
 ### Xbox mapping for another input mapper
 
@@ -122,7 +122,7 @@ See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md]
 3. Delete all ConsolePort / ConsolePortLK SavedVariables files, including `.lua` and `.lua.bak` copies, from **both your account and character SavedVariables folders**: `WTF/Account/ACCOUNT/SavedVariables/` and `WTF/Account/ACCOUNT/REALM/CHARACTER/SavedVariables/`. Replace ACCOUNT, REALM, and CHARACTER with your actual folder names. Remove only ConsolePort-related files (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used the previous addon. **Do not delete unrelated settings or the entire WTF folder.**
 4. Download the install ZIP attached to this fork's GitHub release. GitHub's automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
 5. Extract the eight addon folders directly into `World of Warcraft/Interface/AddOns/`.
-6. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
+6. Configure your preferred controller mapper (for example, GameNative, Steam Input, or [WoWPadX](https://github.com/leoaviana/WoWpadX)), connect your controller, and set the desired button/modifier mappings.
 7. Start WoW, enable the modules you need, select your controller preset, and complete calibration.
 
 **Initial switch to Enhanced: SavedVariables DELETE; CLIENT RESTART.** This resets old ConsolePort bindings, calibration, and layout preferences, so configure them again. This is the initial-install requirement, not an instruction to erase settings for every future update. The optional on-screen keyboard is disabled by default on a fresh configuration.
