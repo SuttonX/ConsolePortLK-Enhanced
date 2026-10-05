@@ -14,7 +14,7 @@ This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report 
 
 Use a controller-to-keyboard/mouse mapper such as **GameNative**, **Steam Input**, **[WoWPadX](https://github.com/leoaviana/WoWpadX)**, or your own compatible mapping setup.  WoW 3.3.5a requires mapped keyboard/mouse input; select the controller preset and calibrate ConsolePortLK to your mapper's outputs.
 
-The maintainer previously played the original ConsolePortLK successfully on an **AYN Thor using GameNative and a custom mapping setup**.  Enhanced development and testing used WoWPadX.  WoWPadX remains a documented option, with the tested input mappings below; it is not required.  Enhanced has not been separately tested with every mapper/device combination.
+The maintainer previously played the original ConsolePortLK successfully on an **Android device using GameNative and a custom mapping setup**.  Enhanced development and testing used WoWPadX.  WoWPadX remains a documented option, with the tested input mappings below; it is not required.  Enhanced has not been separately tested with every mapper/device combination.
 
 ### Tested configuration and compatibility
 
