@@ -34,26 +34,18 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 | D-pad right | F2 |
 | D-pad down | F3 |
 | D-pad left | F4 |
-| View / Back | F5 |
-| Menu / Start | F6 |
+| View / Back (SELECT) | F5 |
+| Menu / Start (START) | F6 |
 | LB, left bumper | F7 |
 | RB, right bumper | F8 |
 | LT, left rear trigger | Hold **Left Shift** |
 | RT, right rear trigger | Hold **Left Ctrl** |
-| Left stick up | Hold W |
-| Left stick left | Hold A |
-| Left stick down | Hold S |
-| Left stick right | Hold D |
-| Left stick diagonals | Hold the corresponding two movement keys together |
+| Left stick movement | WASD |
 | Left stick click, L3 | Left mouse button |
-| Right stick up | Move mouse up |
-| Right stick right | Move mouse right |
-| Right stick down | Move mouse down |
-| Right stick left | Move mouse left |
-| Right stick diagonals | Combine the corresponding mouse movements |
+| Right stick movement | Mouse movement |
 | Right stick click, R3 | Right mouse button |
 | Xbox / Guide button, if exposed to the mapper | Numpad multiply (`*`) |
-| Share button, if exposed as the mapper’s Misc1 input | Numpad add (`+`) |
+| Share / capture button (newer Xbox controllers), if exposed as Misc1 | Numpad add (`+`) |
 | Elite right paddle 1, if exposed independently | Numpad 0 |
 | Elite right paddle 2, if exposed independently | Numpad 1 |
 | Elite left paddle 1, if exposed independently | Numpad 2 |
@@ -61,7 +53,7 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 
 Use ordinary held inputs: pressing a trigger sends modifier-down, releasing it sends modifier-up. Holding both triggers must produce **Shift + Ctrl** simultaneously. Avoid toggle or turbo mode for movement, modifiers, and stick clicks. Map the right stick to relative mouse movement and give both sticks an appropriate dead zone.
 
-Numpad multiply and add are distinct from typing `Shift+8` or `Shift+=`. Guide/Share availability depends on the controller and operating system. Many Elite configurations expose paddles as duplicates of existing buttons; the separate paddle outputs above apply only when the mapper can see independent paddle inputs. Standard Xbox controllers do not have paddles.
+Numpad multiply and add are distinct from typing `Shift+8` or `Shift+=`. View / Back is the button commonly called SELECT; Menu / Start is START. The Share button is a separate screenshot/video capture button on newer Xbox controllers, not SELECT. Guide/Share availability depends on the controller and operating system. Many Elite configurations expose paddles as duplicates of existing buttons; the separate paddle outputs above apply only when the mapper can see independent paddle inputs. Standard Xbox controllers do not have paddles.
 
 **Optional 16-way movement:** WoWPadX additionally sends H for the horizontal-dominant intermediate diagonal sectors and V for the vertical-dominant sectors. These are supplementary sector outputs, not replacements for WASD. A basic eight-direction WASD setup can omit them; match the addon’s movement configuration to the mapper’s capabilities. WoWPadX’s automatic walk/run handling uses additional feedback logic, so copying the physical mappings does not reproduce every WoWPadX feature.
 
