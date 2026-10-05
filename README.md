@@ -35,7 +35,7 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 | D-pad down | F3 |
 | D-pad left | F4 |
 | View / Back (SELECT) | F5 |
-| Menu / Start (START) | F6 |
+| Menu (START) | F6 |
 | LB, left bumper | F7 |
 | RB, right bumper | F8 |
 | LT, left rear trigger | Hold **Left Shift** |
