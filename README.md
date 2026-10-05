@@ -22,6 +22,8 @@ The improvements use shared addon code and are expected to work with other suppo
 
 ### Xbox mapping for another input mapper
 
+> **NOT REQUIRED if you use WoWPadX.** WoWPadX supplies the controller mappings for its selected profile; you do not need to enter the mappings below manually. Select your modifier profile in WoWPadX and complete ConsolePortLK’s normal calibration. This table is only a reference for configuring another input mapper, such as Steam Input or GameNative.
+
 This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching the Xbox configuration used during development. It is a physical-input mapping, not a list of the in-game actions assigned to those inputs. Calibrate with `/cp recalibrate` after selecting this profile or changing mapper settings.
 
 | Xbox control | Keyboard or mouse output |
