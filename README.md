@@ -89,12 +89,22 @@ See [CHANGELOG.md](CHANGELOG.md) for the retained changes and [UPSTREAM-CHANGES.
 
 ## Installation
 
-1. Download the install ZIP attached to this fork’s GitHub release. GitHub’s automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
-2. Extract the eight addon folders into `World of Warcraft/Interface/AddOns/`: `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
-3. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
-4. Restart the client, enable the modules you need, select your controller preset, and complete calibration.
+### Required clean install when first switching to Enhanced
 
-**Upgrading from our previous development build: keep SavedVariables; restart the client after installing this package.** Keep a backup of your existing settings. This fork replaces the same eight addon folders as ConsolePortLK; do not install a second renamed copy alongside them. The optional on-screen keyboard is disabled by default on a fresh configuration.
+**For your first installation of ConsolePortLK Enhanced, remove all previous ConsolePort / ConsolePortLK addon folders and their saved settings before installing this version.** Existing saved bindings and settings can override Enhanced's fresh defaults.
+
+1. **Fully close WoW.**
+2. In `World of Warcraft/Interface/AddOns/`, delete all addon folders belonging to previous ConsolePort or ConsolePortLK installations, including their modules and any renamed copies. The standard folders are `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
+3. Delete the ConsolePort / ConsolePortLK SavedVariables files, including both `.lua` and `.lua.bak` copies, from **both** locations:
+   - Account settings: `WTF/Account/<ACCOUNT>/SavedVariables/`
+   - Character settings: `WTF/Account/<ACCOUNT>/<REALM>/<CHARACTER>/SavedVariables/`
+   Remove files belonging to ConsolePort and its modules (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used a previous installation. Do not delete unrelated addons' settings or the entire WTF folder.
+4. Download the install ZIP attached to this fork's GitHub release. GitHub's automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
+5. Extract the eight addon folders directly into `World of Warcraft/Interface/AddOns/`.
+6. Install and start [WoWPadX](https://github.com/leoaviana/WoWpadX), connect your controller, and select your modifier profile.
+7. Start WoW, enable the modules you need, select your controller preset, and complete calibration.
+
+**Initial switch to Enhanced: SavedVariables DELETE; CLIENT RESTART.** This resets old ConsolePort bindings, calibration, and layout preferences, so configure them again. This is the initial-install requirement, not an instruction to erase settings for every future update. The optional on-screen keyboard is disabled by default on a fresh configuration.
 
 ### Optional druid form support
 
