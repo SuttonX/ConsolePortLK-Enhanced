@@ -8,7 +8,7 @@ An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/C
 
 This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report Enhanced-specific issues here rather than to the original ConsolePort project. Original authorship and the Artistic License 2.0 are preserved.
 
-> **Version 1.0.0**, based on development build v161. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
+> **Version 1.0.1**, retaining the v161 gameplay improvements and adding an Interface-options crash fix. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
 
 ## Controller mapper required
 
@@ -113,7 +113,15 @@ The reported Prowl/stealth-break cooldown issue could no longer be reproduced in
 
 See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md](UPSTREAM-CHANGES.md) for the complete source-file inventory and review notes.
 
+## Interface-options crash fix in 1.0.1
+
+Opening Blizzard Interface options, including through `/tomtom` or the controller menu, could exhaust the Lua stack or memory while ConsolePort scanned large addon UI trees. Action-button and controller-navigation scans now use iterative traversal with duplicate/cycle guards, preserving existing scan order, filtering, and scroll behavior. There is no fixed frame-count cutoff. The fix passed automated wide/deep-tree tests and an in-game retest of the reported crash.
+
 ## Installation
+
+### Updating an existing Enhanced installation
+
+To update Enhanced 1.0.0 to 1.0.1, fully close WoW, replace the eight ConsolePort addon folders with those from the release install ZIP, and **keep your ConsolePort SavedVariables**. Recalibration or a settings reset is not required for this update.
 
 ### Required clean install when first switching to Enhanced
 

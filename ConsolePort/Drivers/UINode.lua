@@ -100,41 +100,54 @@ function Node:GetSuperNode(super, node)
 end
 
 function Node:GetScrollButtons(node)
-	if node then
-		if node:IsMouseWheelEnabled() then
-			for _, frame in pairs({node:GetChildren()}) do
-				if frame:IsObjectType("Slider") then
-					return frame:GetChildren()
-				end
-			end
-		elseif node:IsObjectType("Slider") then
-			return node:GetChildren()
-		else
-			return self:GetScrollButtons(node:GetParent())
-		end
-	end
+    local visited = {}
+    while node and not visited[node] do
+        visited[node] = true
+        if node:IsMouseWheelEnabled() then
+            for _, frame in pairs({node:GetChildren()}) do
+                if frame:IsObjectType("Slider") then return frame:GetChildren() end
+            end
+            return
+        elseif node:IsObjectType("Slider") then
+            return node:GetChildren()
+        else
+            node = node:GetParent()
+        end
+    end
 end
 
 ---------------------------------------------------------------
--- Recursive scanner
+-- Iterative scanner: preserve depth-first sibling order and scroll ancestry
+-- without retaining expanding sibling varargs on a recursive Lua call stack.
 ---------------------------------------------------------------
-function Node:Scan(super, node, sibling, ...)
-	if self:IsRelevant(node) then
-		local object, level = node:GetObjectType(), self:GetFrameLevel(node)
-		if self:IsDrawn(node, super) then
-			if self:IsInteractive(node, object) then
-				self:CacheItem(node, object, super, level)
-			elseif node:IsMouseEnabled() then
-				self:CacheRect(node, level)
-			end
-		end
-		if self:IsTree(node) then
-			self:Scan(self:GetSuperNode(super, node), node:GetChildren())
-		end
-	end
-	if sibling then
-		self:Scan(super, sibling, ...)
-	end
+function Node:Scan(super, ...)
+    local roots, pending, visited = {...}, {}, {}
+    for i = #roots, 1, -1 do pending[#pending + 1] = {node=roots[i], super=super} end
+    while #pending > 0 do
+        local current = pending[#pending]
+        pending[#pending] = nil
+        local node, ancestor = current.node, current.super
+        if node and not visited[node] then
+            visited[node] = true
+            if self:IsRelevant(node) then
+                local object, level = node:GetObjectType(), self:GetFrameLevel(node)
+                if self:IsDrawn(node, ancestor) then
+                    if self:IsInteractive(node, object) then
+                        self:CacheItem(node, object, ancestor, level)
+                    elseif node:IsMouseEnabled() then
+                        self:CacheRect(node, level)
+                    end
+                end
+                if self:IsTree(node) then
+                    local childSuper = self:GetSuperNode(ancestor, node)
+                    local children = {node:GetChildren()}
+                    for i = #children, 1, -1 do
+                        pending[#pending + 1] = {node=children[i], super=childSuper}
+                    end
+                end
+            end
+        end
+    end
 end
 
 function Node:ScrubCache(i, item)
@@ -153,7 +166,7 @@ function Node:ScrubCache(i, item)
 	end
 end
 
--- @param  varargs : list of frames to scan recursively
+-- @param  varargs : list of frame hierarchies to scan
 -- @return cache   : table of nodes on screen
 function Node:RunScan(...)
 	self:Scan(nil, ...)

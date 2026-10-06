@@ -1,6 +1,8 @@
 # Upstream review inventory
 
-Baseline: official ConsolePortLK 1.5.0-rc2 release package; upstream tag/commit `994793729ca4a5b97e87df7ce6b986ec2a370d55`. Candidate: development v161.
+Baseline: official ConsolePortLK 1.5.0-rc2 release package; upstream tag/commit `994793729ca4a5b97e87df7ce6b986ec2a370d55`. Current release: Enhanced 1.0.1, retaining development v161 and adding the Interface-options scanner fix.
+
+Release 1.0.1 additionally changes `ConsolePort/Drivers/UITracker.lua` and `ConsolePort/Drivers/UINode.lua` and updates version metadata in all eight module TOCs. The inventory below records the original v161 publication baseline.
 
 See CHANGELOG.md for behavior grouped by subsystem and TESTING.md for evidence. The table is exhaustive for differing files inside the eight addon roots before publication documentation is added. Development-only reports are relocated out of the addon roots.
 

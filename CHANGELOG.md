@@ -1,4 +1,14 @@
-# Retained changes from ConsolePortLK 1.5.0-rc2
+# Changelog
+
+## 1.0.1 — Interface-options crash fix
+
+- Fixed stack/memory exhaustion while scanning large addon UI trees when opening Blizzard Interface options through `/tomtom`, the controller menu, or other entry points.
+- Replaced recursive action-button and controller-navigation traversal with iterative scans and duplicate/cycle guards. Parent/container and scroll-parent lookups are iterative as well.
+- Preserved existing traversal order, action-bar filtering, visibility rules, and scroll ancestry. No arbitrary frame-count limit was added.
+- Updated version metadata for all eight bundled modules. Existing Enhanced users can retain their saved settings.
+- Automated regression/stress checks passed; the affected user confirmed the reported crash no longer occurred in game.
+
+## Retained changes from ConsolePortLK 1.5.0-rc2
 
 ## Cooldowns and bars
 
