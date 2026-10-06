@@ -12,9 +12,9 @@ This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report 
 
 ## Controller mapper required
 
-Use a controller-to-keyboard/mouse mapper such as **GameNative**, **Steam Input**, **[WoWPadX](https://github.com/leoaviana/WoWpadX)**, or your own compatible mapping setup.  WoW 3.3.5a requires mapped keyboard/mouse input; select the controller preset and calibrate ConsolePortLK to your mapper's outputs.
+Use a controller-to-keyboard/mouse mapper such as **GameNative**, **Steam Input**, **[AntiMicroX](https://github.com/AntiMicroX/antimicrox)**, **[WoWPadX](https://github.com/leoaviana/WoWpadX)**, or your own compatible mapping setup.  WoW 3.3.5a requires mapped keyboard/mouse input; select the controller preset and calibrate ConsolePortLK to your mapper's outputs.
 
-The maintainer previously played the original ConsolePortLK successfully on an **Android device using GameNative and a custom mapping setup**.  Enhanced development and testing used WoWPadX.  WoWPadX remains a documented option, with the tested input mappings below; it is not required.  Enhanced has not been separately tested with every mapper/device combination.
+The maintainer previously played the original ConsolePortLK successfully on an **Android device using GameNative and a custom mapping setup**.  Enhanced development and testing used WoWPadX.  The Xbox LT/RT configuration below was also successfully tested on Windows using AntiMicroX with eight-direction arrow-key movement.  WoWPadX remains a documented option, with the tested input mappings below; it is not required.  Enhanced has not been separately tested with every mapper/device combination.
 
 ### Tested configuration and compatibility
 
@@ -24,9 +24,9 @@ The improvements use shared addon code and are expected to work with other suppo
 
 ### Xbox mapping for another input mapper
 
-> **NOT REQUIRED if you use WoWPadX.** WoWPadX supplies the controller mappings for its selected profile; you do not need to enter the mappings below manually. Select your modifier profile in WoWPadX and complete ConsolePortLK’s normal calibration. This table is only a reference for configuring another input mapper, such as Steam Input or GameNative.
+> **NOT REQUIRED if you use WoWPadX.** WoWPadX supplies the controller mappings for its selected profile; you do not need to enter the mappings below manually. Select your modifier profile in WoWPadX and complete ConsolePortLK’s normal calibration. This table is only a reference for configuring another input mapper, such as AntiMicroX, Steam Input, or GameNative.
 
-This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching the Xbox configuration used during development. It is a physical-input mapping, not a list of the in-game actions assigned to those inputs. Calibrate with `/cp recalibrate` after selecting this profile or changing mapper settings.
+This table follows WoWPadX’s **triggers-as-modifiers** profile, matching the Xbox configuration used during development, with arrow keys offered as a tested alternative to its default WASD movement. It is a physical-input mapping, not a list of the in-game actions assigned to those inputs. Calibrate with `/cp recalibrate` after selecting this profile or changing mapper settings.
 
 | Xbox control | Keyboard or mouse output |
 | --- | --- |
@@ -44,7 +44,7 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 | RB, right bumper | F8 |
 | LT, left rear trigger | Hold **Left Shift** |
 | RT, right rear trigger | Hold **Left Ctrl** |
-| Left stick movement | WASD |
+| Left stick movement | Arrow keys or WASD |
 | Left stick click, L3 | Left mouse button |
 | Right stick movement | Mouse movement |
 | Right stick click, R3 | Right mouse button |
@@ -55,11 +55,13 @@ This table reproduces WoWPadX’s **triggers-as-modifiers** profile, matching th
 | Elite left paddle 1, if exposed independently | Numpad 2 |
 | Elite left paddle 2, if exposed independently | Numpad 3 |
 
+**Arrow-key movement:** map left-stick up/down/left/right to the corresponding keyboard arrows, with diagonals sending two arrows simultaneously.  This avoids typing WASD letters into text fields, although arrows can still move a text cursor or navigate chat history.  Use eight-direction movement without H/V if you want to avoid letter input entirely, then recalibrate.
+
 Use ordinary held inputs: pressing a trigger sends modifier-down, releasing it sends modifier-up. Holding both triggers must produce **Shift + Ctrl** simultaneously. Avoid toggle or turbo mode for movement, modifiers, and stick clicks. Map the right stick to relative mouse movement and give both sticks an appropriate dead zone.
 
 Numpad multiply and add are distinct from typing `Shift+8` or `Shift+=`. View / Back is the button commonly called SELECT; Menu / Start is START. The Share button is a separate screenshot/video capture button on newer Xbox controllers, not SELECT. Guide/Share availability depends on the controller and operating system. Many Elite configurations expose paddles as duplicates of existing buttons; the separate paddle outputs above apply only when the mapper can see independent paddle inputs. Standard Xbox controllers do not have paddles.
 
-**Optional 16-way movement:** WoWPadX additionally sends H for the horizontal-dominant intermediate diagonal sectors and V for the vertical-dominant sectors. These are supplementary sector outputs, not replacements for WASD. A basic eight-direction WASD setup can omit them; match the addon’s movement configuration to the mapper’s capabilities. WoWPadX’s automatic walk/run handling uses additional feedback logic, so copying the physical mappings does not reproduce every WoWPadX feature.
+**Optional 16-way movement:** WoWPadX additionally sends H for the horizontal-dominant intermediate diagonal sectors and V for the vertical-dominant sectors. These are supplementary sector outputs, not replacements for the four movement directions. A basic eight-direction arrow-key or WASD setup can omit them; match the addon’s movement configuration to the mapper’s capabilities. WoWPadX’s automatic walk/run handling uses additional feedback logic, so copying the physical mappings does not reproduce every WoWPadX feature.
 
 WoWPadX also supports other modifier profiles:
 
@@ -122,7 +124,7 @@ See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md]
 3. Delete all ConsolePort / ConsolePortLK SavedVariables files, including `.lua` and `.lua.bak` copies, from **both your account and character SavedVariables folders**: `WTF/Account/ACCOUNT/SavedVariables/` and `WTF/Account/ACCOUNT/REALM/CHARACTER/SavedVariables/`. Replace ACCOUNT, REALM, and CHARACTER with your actual folder names. Remove only ConsolePort-related files (normally `ConsolePort*.lua` and `ConsolePort*.lua.bak`). Repeat for every account and character that used the previous addon. **Do not delete unrelated settings or the entire WTF folder.**
 4. Download the install ZIP attached to this fork's GitHub release. GitHub's automatic “Source code” ZIP contains a repository parent folder; it is not the ready-to-install archive.
 5. Extract the eight addon folders directly into `World of Warcraft/Interface/AddOns/`.
-6. Configure your preferred controller mapper (for example, GameNative, Steam Input, or [WoWPadX](https://github.com/leoaviana/WoWpadX)), connect your controller, and set the desired button/modifier mappings.
+6. Configure your preferred controller mapper (for example, GameNative, Steam Input, [AntiMicroX](https://github.com/AntiMicroX/antimicrox), or [WoWPadX](https://github.com/leoaviana/WoWpadX)), connect your controller, and set the desired button/modifier mappings.
 7. Start WoW, enable the modules you need, select your controller preset, and complete calibration.
 
 **Initial switch to Enhanced: SavedVariables DELETE; CLIENT RESTART.** This resets old ConsolePort bindings, calibration, and layout preferences, so configure them again. This is the initial-install requirement, not an instruction to erase settings for every future update. The optional on-screen keyboard is disabled by default on a fresh configuration.
