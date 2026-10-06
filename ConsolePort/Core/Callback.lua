@@ -64,17 +64,17 @@ function ConsolePort:RegisterCallback(method, func, owner, orderIndex)
 	-- Add hook if it doesn't exist
 	if not callbacks[method] then
 		local functionsToRun = {}
-		local callBackOwners = owners[method]
 		callbacks[method] = functionsToRun
 		hooksecurefunc(self, method, function(self, ...)
 			for _, callback in ipairs(functionsToRun) do
-				callback(callBackOwners and callBackOwners[callback] or self, ...)
+				local callbackOwners = owners[method]
+				callback(callbackOwners and callbackOwners[callback] or self, ...)
 			end
 		end)
 	end
 
 	if orderIndex then
-		tinsert(callbacks[method], func, orderIndex)
+		tinsert(callbacks[method], orderIndex, func)
 	else
 		tinsert(callbacks[method], func)
 	end

@@ -1,5 +1,12 @@
 # Testing status
 
+## 1.0.2 reliability fixes
+
+Mock checks pass for callback order/owners/unregister, invalid and delayed frame discovery, forbid/unforbid, missing frame coordinates, and specialization global isolation. Scanner regression tests cover 8,000 action widgets and 20,000 cursor widgets with deep hierarchies and cycle guards. Runtime Lua is parsed as Lua 5.1; XML script bodies and file references are checked separately.
+
+In game: retain SavedVariables; open Interface through the controller menu and /tomtom with the full addon set. Navigate tabs, scrolling options, closing/reopening windows, and frames created late. Confirm controller action bars, cooldowns and druid form paging still work. Test enabling/disabling addon sets and profile switching. Report errors and exact reproduction steps. On 2026-10-06 the maintainer reported no ConsolePortLK Enhanced issues after installing the audit build alongside the other updated addons and testing profile switching. This overall pass does not prove every failure case was separately exercised.
+
+
 ## 1.0.1 Interface-options fix
 
 The affected user confirmed no crash after installing the two-file fix and retesting in game with their addon setup. Automated tests compared old/new traversal order and filtering; action scanning passed 8,000-sibling and 8,000-descendant trees, and cursor scanning passed 20,000-sibling and 20,000-descendant trees. Both modified Lua files passed syntax checks. These tests address the reported recursive scanner failure; they do not establish compatibility with every addon combination or remove the client’s overall memory limits.
@@ -14,4 +21,4 @@ Other controller presets and all WoWPadX modifier choices have been compared aga
 
 A previously observed Prowl/stealth-break cooldown issue could no longer be reproduced. Barkskin cooldown text and swipe were confirmed after breaking stealth from both the base and modifier bar. This does not establish every possible enemy-caused stealth-break scenario.
 
-Before marking this candidate a stable release, check Orthodox’s optional buttons on first enable. Report other-controller issues with controller preset, physical modifier assignments, mapper, bar layout, reproduction steps, and any Lua error.
+The final Orthodox optional-button placement remains a source-validated change requiring a specific first-enable in-game check. Report other-controller issues with controller preset, physical modifier assignments, mapper, bar layout, reproduction steps, and any Lua error.

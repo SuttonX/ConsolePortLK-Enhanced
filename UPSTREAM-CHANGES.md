@@ -1,6 +1,6 @@
 # Upstream review inventory
 
-Baseline: official ConsolePortLK 1.5.0-rc2 release package; upstream tag/commit `994793729ca4a5b97e87df7ce6b986ec2a370d55`. Current release: Enhanced 1.0.1, retaining development v161 and adding the Interface-options scanner fix.
+Baseline: official ConsolePortLK 1.5.0-rc2 release package; upstream tag/commit `994793729ca4a5b97e87df7ce6b986ec2a370d55`. Current release: Enhanced 1.0.2, retaining development v161 and the tested 1.0.1 Interface-options scanner fix.
 
 Release 1.0.1 additionally changes `ConsolePort/Drivers/UITracker.lua` and `ConsolePort/Drivers/UINode.lua` and updates version metadata in all eight module TOCs. The inventory below records the original v161 publication baseline.
 
@@ -51,3 +51,5 @@ All controller artwork in this candidate is retained byte-for-byte from the offi
 ## Contribution path
 
 Fork leoaviana/ConsolePortLK into SuttonX/ConsolePortLK-Enhanced to preserve ancestry. Upload these sources to the fork, then open a pull request targeting the original repository’s master branch if you want to offer the changes upstream. The original maintainer decides whether to incorporate them.
+
+Release 1.0.2 additionally changes Core/Callback.lua, Drivers/UIStack.lua, Drivers/UITracker.lua, Drivers/UINode.lua and Init/Wrapper.lua for callback, frame-tracking, geometry availability and temporary-variable handling.

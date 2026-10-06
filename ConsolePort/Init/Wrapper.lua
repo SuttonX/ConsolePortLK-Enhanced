@@ -73,7 +73,7 @@ local function CP_GetTalentSpecInfo(isInspect)
 end
 
 function CPAPI.GetSpecializationInfo(specID)
-	_, specName, _ = CP_GetTalentSpecInfo()
+	local _, specName = CP_GetTalentSpecInfo()
 	return specID, specName;
 end
 

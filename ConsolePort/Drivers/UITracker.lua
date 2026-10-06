@@ -55,7 +55,7 @@ function ConsolePort:UpdateFrameTracker()
 end
 
 function ConsolePort:AddFrameTracker(frame)
-	frameTrackers[frame] = true
+	if type(frame) == 'string' then frameTrackers[frame] = true end
 end
 
 function ConsolePort:IsFrameTracked(frame)

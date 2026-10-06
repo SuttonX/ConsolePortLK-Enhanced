@@ -279,15 +279,18 @@ end
 
 function Node:GetCandidatesForVector(vector, comparator, candidates)
 	local thisX, thisY = vector.x, vector.y
+	if not thisX or not thisY then return candidates end
 	for i, destination in self:IterateCache() do
 		local candidate = destination.node
 		local destX, destY = candidate:GetCenter()
-		local distX, distY = self:GetDistance(thisX, thisY, destX, destY)
+		if destX and destY then
+			local distX, distY = self:GetDistance(thisX, thisY, destX, destY)
 
-		if comparator(destX, destY, distX, distY, thisX, thisY) then
-			candidates[destination] = { 
-				x = destX; y = destY; h = distX; v = distY;
-			}
+			if comparator(destX, destY, distX, distY, thisX, thisY) then
+				candidates[destination] = {
+					x = destX; y = destY; h = distX; v = distY;
+				}
+			end
 		end
 	end 
 	return candidates
@@ -360,16 +363,19 @@ end
 function Node:GetPriorityCandidate(x, y)
 	local targNode, targDist, targPrio
 	for _, this in self:IterateCache() do
-		local thisDist = self:GetDistanceSum(x, y, this.node:GetCenter())
-		local thisPrio = this.node.hasPriority
+		local nx, ny = this.node:GetCenter()
+		if nx and ny then
+			local thisDist = self:GetDistanceSum(x, y, nx, ny)
+			local thisPrio = this.node.hasPriority
 
-		if thisPrio and not targPrio then
-			targNode = this
-			break
-		elseif not targNode or ( not targPrio and thisDist < targDist ) then
-			targNode = this
-			targDist = thisDist
-			targPrio = thisPrio
+			if thisPrio and not targPrio then
+				targNode = this
+				break
+			elseif not targNode or ( not targPrio and thisDist < targDist ) then
+				targNode = this
+				targDist = thisDist
+				targPrio = thisPrio
+			end
 		end
 	end
 	return targNode

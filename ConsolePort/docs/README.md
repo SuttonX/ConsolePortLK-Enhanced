@@ -8,7 +8,7 @@ An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/C
 
 This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report Enhanced-specific issues here rather than to the original ConsolePort project. Original authorship and the Artistic License 2.0 are preserved.
 
-> **Version 1.0.1**, retaining the v161 gameplay improvements and adding an Interface-options crash fix. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
+> **Version 1.0.2**, adding callback and UI-navigation reliability fixes while retaining the tested 1.0.1 scanner fix. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
 
 ## Controller mapper required
 
@@ -119,9 +119,11 @@ Opening Blizzard Interface options, including through `/tomtom` or the controlle
 
 ## Installation
 
+Download the ready-to-install [ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip). The release asset keeps this filename across versions.
+
 ### Updating an existing Enhanced installation
 
-To update Enhanced 1.0.0 to 1.0.1, fully close WoW, replace the eight ConsolePort addon folders with those from the release install ZIP, and **keep your ConsolePort SavedVariables**. Recalibration or a settings reset is not required for this update.
+To update an existing Enhanced installation to 1.0.2, fully close WoW, replace the eight ConsolePort addon folders with those from the release install ZIP, and **keep your ConsolePort SavedVariables**. Recalibration or a settings reset is not required for this update.
 
 ### Required clean install when first switching to Enhanced
 
@@ -201,3 +203,9 @@ For Steam Deck/Proton/Wine, consult the [original ConsolePortLK setup guidance](
 - [SuttonX](https://github.com/SuttonX): Enhanced development, runtime testing, and maintenance.
 
 Distributed under the existing [Artistic License 2.0](LICENSE). This fork is not affiliated with Blizzard or the original ConsolePort project.
+
+## Reliability improvements in 1.0.2
+
+Version 1.0.2 corrects callback insertion order and callback-owner lookup, restores UI cursor tracking after a frame is un-forbidden, ignores invalid frame-tracker inputs, and skips cursor candidates whose coordinates become unavailable. Talent specialization lookup now keeps its temporary values local.
+
+Automated checks cover these cases and retain the 1.0.1 scanner stress tests. The maintainer installed the audit build and reported no ConsolePortLK Enhanced issues during profile-switch testing on 2026-10-06. This is not an exhaustive test of every controller or addon combination. Close WoW and replace all eight addon folders; keep SavedVariables.

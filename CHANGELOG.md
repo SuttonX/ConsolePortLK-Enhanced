@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.2 — 2026-10-06
+
+- Correct callback order insertion and resolve owners registered after the first hook.
+- Restore cursor tracking when a forbidden frame becomes allowed again.
+- Safely reject invalid frame-tracker inputs and skip unavailable frame coordinates.
+- Keep talent-specialization temporaries out of the global namespace.
+- Correct the main TOC reference to Core/CVar.lua to match filename case.
+- Retain the tested 1.0.1 iterative scanner fixes and saved-settings compatibility.
+
+
 ## 1.0.1 — Interface-options crash fix
 
 - Fixed stack/memory exhaustion while scanning large addon UI trees when opening Blizzard Interface options through `/tomtom`, the controller menu, or other entry points.
