@@ -4,11 +4,9 @@
 
 **Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced.**
 
-An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/ConsolePortLK), based on release **1.5.0-rc2**. It retains the original controller interface and adds improvements to cooldown displays, action-bar layouts, settings navigation, and saved layout preferences. ConsolePortLK itself backports [Sebastian Lindfors’s ConsolePort](https://github.com/seblindfors/ConsolePort) 1.9.17.
+An enhanced fork of [leoaviana’s ConsolePortLK](https://github.com/leoaviana/ConsolePortLK), based on the original WotLK backport. It retains the original controller interface and adds improvements to cooldown displays, action-bar layouts, settings navigation, and saved layout preferences. ConsolePortLK itself backports [Sebastian Lindfors’s ConsolePort](https://github.com/seblindfors/ConsolePort).
 
 This fork is maintained by [SuttonX](https://github.com/SuttonX). Please report Enhanced-specific issues here rather than to the original ConsolePort project. Original authorship and the Artistic License 2.0 are preserved.
-
-> **Version 1.0.2**, adding callback and UI-navigation reliability fixes while retaining the tested 1.0.1 scanner fix. The main gameplay improvements were tested in game; the final Orthodox optional-button geometry adjustment has source validation but has not yet received an in-game test. See [testing status](TESTING.md).
 
 ## Controller mapper required
 
@@ -76,9 +74,9 @@ The trigger profile above is our tested configuration; it is **not** WoWPadX’s
 
 Mapping sources: [WoWPadX KeybindDefaults.h](https://github.com/leoaviana/WoWpadX/blob/4c435e0c6a9247fe50dc0dac0f23796058393c4a/WoWpadX/KeybindDefaults.h) and [InputMapper.cpp](https://github.com/leoaviana/WoWpadX/blob/4c435e0c6a9247fe50dc0dac0f23796058393c4a/WoWpadX/InputMapper.cpp). These links pin the inspected version so the documented mappings remain traceable.
 
-## What changed from the original ConsolePortLK
+## Features and improvements
 
-These changes are compared with the original **ConsolePortLK 1.5.0-rc2**, rather than earlier Enhanced development builds.
+These features and improvements build on the original ConsolePortLK backport.
 
 ### New features
 
@@ -109,13 +107,13 @@ These changes are compared with the original **ConsolePortLK 1.5.0-rc2**, rather
 - Optional upper bar indicators begin unchecked on fresh profiles. Their original modifier-label behavior is retained.
 - Added Xbox input mappings for alternative mappers, WoWPadX setup guidance, compatibility notes, source comparison documentation, and testing history.
 
-The reported Prowl/stealth-break cooldown issue could no longer be reproduced in the final tested setup; every possible enemy-caused stealth break has not been independently verified. See [TESTING.md](TESTING.md) for confirmed results and remaining limits.
+Testing history, confirmed results, and remaining limits are documented in [TESTING.md](TESTING.md).
 
 See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md](UPSTREAM-CHANGES.md) for the complete source-file inventory and review notes.
 
-## Interface-options crash fix in 1.0.1
+## Reliable interface navigation
 
-Opening Blizzard Interface options, including through `/tomtom` or the controller menu, could exhaust the Lua stack or memory while ConsolePort scanned large addon UI trees. Action-button and controller-navigation scans now use iterative traversal with duplicate/cycle guards, preserving existing scan order, filtering, and scroll behavior. There is no fixed frame-count cutoff. The fix passed automated wide/deep-tree tests and an in-game retest of the reported crash.
+Opening Blizzard Interface options, including through `/tomtom` or the controller menu, could exhaust the Lua stack or memory while ConsolePort scanned large addon UI trees. Action-button and controller-navigation scans now use iterative traversal with duplicate/cycle guards, preserving existing scan order, filtering, and scroll behavior. There is no fixed frame-count cutoff. Controller navigation also handles changing frame availability, invalid frame inputs, and missing coordinates.  Callback processing preserves callback order and ownership.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
 
 ## Installation
 
@@ -123,11 +121,13 @@ Download the ready-to-install [ConsolePortLK-Enhanced.zip](https://github.com/Su
 
 ### Updating an existing Enhanced installation
 
-To update an existing Enhanced installation to 1.0.2, fully close WoW, replace the eight ConsolePort addon folders with those from the release install ZIP, and **keep your ConsolePort SavedVariables**. Recalibration or a settings reset is not required for this update.
+Fully close WoW, download the latest install ZIP, and replace all eight ConsolePort addon folders.  **Keep your ConsolePort SavedVariables** to preserve your bindings, calibration, and layouts.  Any release-specific migration instructions belong in the [release notes](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest).
+
+**Updating Enhanced: SavedVariables KEEP; CLIENT RESTART.**
 
 ### Required clean install when first switching to Enhanced
 
-**For your first installation of ConsolePortLK Enhanced, remove all previous ConsolePort / ConsolePortLK addon folders and their saved settings before installing this version.** Existing saved bindings and settings can override Enhanced's fresh defaults.
+**For your first installation of ConsolePortLK Enhanced, remove all previous ConsolePort / ConsolePortLK addon folders and their saved settings before installing Enhanced.** Existing saved bindings and settings can override Enhanced's fresh defaults.
 
 1. **Fully close WoW.**
 2. In `World of Warcraft/Interface/AddOns/`, delete all addon folders belonging to previous ConsolePort or ConsolePortLK installations, including their modules and any renamed copies. The standard folders are `ConsolePort`, `ConsolePortAdvanced`, `ConsolePortBar`, `ConsolePortHelp`, `ConsolePortKeyboard`, `ConsolePortLoader`, `ConsolePortUI_Loot`, and `ConsolePortUI_Menu`.
@@ -203,9 +203,3 @@ For Steam Deck/Proton/Wine, consult the [original ConsolePortLK setup guidance](
 - [SuttonX](https://github.com/SuttonX): Enhanced development, runtime testing, and maintenance.
 
 Distributed under the existing [Artistic License 2.0](LICENSE). This fork is not affiliated with Blizzard or the original ConsolePort project.
-
-## Reliability improvements in 1.0.2
-
-Version 1.0.2 corrects callback insertion order and callback-owner lookup, restores UI cursor tracking after a frame is un-forbidden, ignores invalid frame-tracker inputs, and skips cursor candidates whose coordinates become unavailable. Talent specialization lookup now keeps its temporary values local.
-
-Automated checks cover these cases and retain the 1.0.1 scanner stress tests. The maintainer installed the audit build and reported no ConsolePortLK Enhanced issues during profile-switch testing on 2026-10-06. This is not an exhaustive test of every controller or addon combination. Close WoW and replace all eight addon folders; keep SavedVariables.
