@@ -111,10 +111,6 @@ Testing history, confirmed results, and remaining limits are documented in [TEST
 
 See [CHANGELOG.md](CHANGELOG.md) for technical details and [UPSTREAM-CHANGES.md](UPSTREAM-CHANGES.md) for the complete source-file inventory and review notes.
 
-## Reliable interface navigation
-
-Opening Blizzard Interface options, including through `/tomtom` or the controller menu, could exhaust the Lua stack or memory while ConsolePort scanned large addon UI trees. Action-button and controller-navigation scans now use iterative traversal with duplicate/cycle guards, preserving existing scan order, filtering, and scroll behavior. There is no fixed frame-count cutoff. Controller navigation also handles changing frame availability, invalid frame inputs, and missing coordinates.  Callback processing preserves callback order and ownership.  See [TESTING.md](TESTING.md) for validation history and remaining limits.
-
 ## Installation
 
 Download the ready-to-install [ConsolePortLK-Enhanced.zip](https://github.com/SuttonX/ConsolePortLK-Enhanced/releases/latest/download/ConsolePortLK-Enhanced.zip). The release asset keeps this filename across versions.
@@ -142,6 +138,12 @@ Fully close WoW, download the latest install ZIP, and replace all eight ConsoleP
 ### Optional druid form support
 
 Install [FormFreedom](https://github.com/SuttonX/FormFreedom) separately if you want automatic form cancellation for its supported interactions. FormFreedom works independently on desktop and alongside ConsolePortLK. Its cancellation logic is not bundled into Enhanced; the integration here supports controller selection and correct bar-state reconciliation.
+
+### Switch between desktop and controller setups
+
+Pair ConsolePortLK Enhanced with [SetupSwap](https://github.com/SuttonX/SetupSwap) to save separate mouse-and-keyboard and controller setups, each with its own addon selections, captured settings and window positions, chat layouts, and native WoW keybindings.  Switch from your desktop layout to a couch or handheld controller layout through SetupSwap’s settings window, slash commands, or minimap button - all without logging out of the game.
+
+SetupSwap profiles are account-wide, and switching applies the saved setup through a UI reload.  SetupSwap is a separate, optional addon; [download the latest SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip) and follow its setup instructions to capture each profile.
 
 ## Copying settings between characters
 
