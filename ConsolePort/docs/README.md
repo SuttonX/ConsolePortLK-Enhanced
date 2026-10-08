@@ -141,7 +141,7 @@ Install [FormFreedom](https://github.com/SuttonX/FormFreedom) separately if you 
 
 ### Switch between desktop and controller setups
 
-Pair ConsolePortLK Enhanced with [SetupSwap](https://github.com/SuttonX/SetupSwap) to save separate mouse-and-keyboard and controller setups, each with its own addon selections, captured settings and window positions, chat layouts, and native WoW keybindings.  Switch from your desktop layout to a couch or handheld controller layout through SetupSwap’s settings window, slash commands, or minimap button - all without logging out of the game.
+Pair ConsolePortLK Enhanced with [SetupSwap](https://github.com/SuttonX/SetupSwap) to save separate mouse-and-keyboard and controller setups, each with their own addon selections, captured settings and window positions, chat layouts, and native WoW keybindings.  Switch from your desktop layout to a couch or handheld controller layout through SetupSwap’s settings window, slash commands, or minimap button - all without logging out of the game.
 
 SetupSwap profiles are account-wide, and switching applies the saved setup through a UI reload.  SetupSwap is a separate, optional addon; [download the latest SetupSwap.zip](https://github.com/SuttonX/SetupSwap/releases/latest/download/SetupSwap.zip) and follow its setup instructions to capture each profile.
 
