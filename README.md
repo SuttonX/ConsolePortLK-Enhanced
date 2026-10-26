@@ -1,6 +1,6 @@
-![ConsolePortLK Enhanced — Controller Support and Improved Bars and Cooldowns for WotLK 3.3.5a](assets/banner.png)
+![ConsolePortLK Enhanced: Controller Support and Improved Bars and Cooldowns for WotLK 3.3.5a](assets/banner.png)
 
-# ConsolePortLK Enhanced — WoW WotLK 3.3.5a Controller Addon
+# ConsolePortLK Enhanced: WoW WotLK 3.3.5a Controller Addon
 
 **Play World of Warcraft: Wrath of the Lich King (WotLK) 3.3.5a with a controller using ConsolePortLK Enhanced.**
 
@@ -159,7 +159,7 @@ ConsolePortLK Enhanced stores some settings for the whole account and others per
 
 Import copies bindings into the destination's active specialization; later character-specific binding edits do not change the source character's bindings.  It does **not** copy controller-bar layout settings or place the source character's spells onto the destination's action bars.
 
-If the source profile is missing, make sure you clicked **Save** on the source character.  Unmodified default bindings are not exported as a separate character profile—use the matching controller preset instead.  Identical saved binding sets can also be deduplicated, so an equivalent profile may appear under another character's name.  For transfers between different accounts, ConsolePortAdvanced provides binding-string export/import from the same window.
+If the source profile is missing, make sure you clicked **Save** on the source character.  Unmodified default bindings are not exported as a separate character profile; use the matching controller preset instead.  Identical saved binding sets can also be deduplicated, so an equivalent profile may appear under another character's name.  For transfers between different accounts, ConsolePortAdvanced provides binding-string export/import from the same window.
 
 ### Copy character-specific settings using Windows File Explorer
 
@@ -196,6 +196,14 @@ These methods copy addon settings and bindings, not the character's server-store
 The tested target is **WotLK 3.3.5a**. A client identifying itself as 3.3.5 may be the normal 3.3.5a client build; compatibility with a separately different 3.3.5 client has not been independently established. Modified client APIs and custom server behavior can affect compatibility.
 
 For Steam Deck/Proton/Wine, consult the [original ConsolePortLK setup guidance](https://github.com/leoaviana/ConsolePortLK#readme). WoWPadX and WoW may need to run in the same Wine/Proton prefix. A Steam keyboard/mouse layout is an alternative when the mapper cannot attach to the game, but the alternative configuration still needs calibration.
+
+## Other addons by SuttonX
+
+- [FormFreedom](https://github.com/SuttonX/FormFreedom): Automatic dismounting and shapeshift cancellation for supported actions.
+- [SetupSwap](https://github.com/SuttonX/SetupSwap): Save and switch addon selections, settings, UI layouts, and action-bar setups.
+- [SmartTravel](https://github.com/SuttonX/SmartTravel): One travel button for smart mounts, Druid forms, Ghost Wolf, and Hearthstone.
+- [Classfix](https://github.com/SuttonX/Classfix): Customize class colors across compatible UI frames and addons.
+- [Questie TomTom Helper](https://github.com/SuttonX/QuestieAutoTomTom): Automatic Questie objective and turn-in waypoints that respect your manual navigation choices.
 
 ## Credits and license
 
