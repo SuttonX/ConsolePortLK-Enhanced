@@ -204,6 +204,7 @@ For Steam Deck/Proton/Wine, consult the [original ConsolePortLK setup guidance](
 - [SmartTravel](https://github.com/SuttonX/SmartTravel): One travel button for smart mounts, Druid forms, Ghost Wolf, and Hearthstone.
 - [Classfix](https://github.com/SuttonX/Classfix): Customize class colors across compatible UI frames and addons.
 - [Questie TomTom Helper](https://github.com/SuttonX/QuestieAutoTomTom): Automatic Questie objective and turn-in waypoints that respect your manual navigation choices.
+- [Locksmith](https://github.com/SuttonX/Locksmith): Modifier-click lockbox unlocking and a compact key and Seaforium selection window for Rogues, Blacksmiths, and Engineers.
 
 ## Credits and license
 
