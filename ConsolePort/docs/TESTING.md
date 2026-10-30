@@ -1,5 +1,9 @@
 # Testing status
 
+## 1.0.5 pet ring
+
+The maintainer approved the final build in game.  Lua 5.1 syntax and mocked checks cover scaling, round/square restoration, the original ten-button geometry, secure eight-way selection, attack/follow overrides, combat deferral, percentage controls, and command versus spell tooltips.  These checks do not establish compatibility with every controller or addon combination.
+
 ## 1.0.2 reliability fixes
 
 Mock checks pass for callback order/owners/unregister, invalid and delayed frame discovery, forbid/unforbid, missing frame coordinates, and specialization global isolation. Scanner regression tests cover 8,000 action widgets and 20,000 cursor widgets with deep hierarchies and cycle guards. Runtime Lua is parsed as Lua 5.1; XML script bodies and file references are checked separately.

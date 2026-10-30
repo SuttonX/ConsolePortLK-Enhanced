@@ -404,6 +404,7 @@ end
 function ab:GetDefaultSettings()
 	return 	{
 		scale = 0.9,
+		petRingScale = 1,
 		width = 1100,
 		watchbars = true,
 		showline = true,

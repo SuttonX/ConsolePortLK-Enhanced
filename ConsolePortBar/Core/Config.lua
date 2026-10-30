@@ -434,6 +434,7 @@ function Preset:OnClick()
     cfg.enablecooldowntext = ab.cfg.enablecooldowntext
     cfg.hiddenbarcooldowns = ab.cfg.hiddenbarcooldowns
     cfg.showmodifiercooldowns = ab.cfg.showmodifiercooldowns
+	cfg.petRingScale = ab.cfg.petRingScale or 1
 	for _, setting in pairs(ab:GetBooleanSettings()) do
 		if setting.cvar then
             -- v74: class-art is a preset-selection default rather than a
@@ -788,6 +789,43 @@ function WindowMixin:CreateLayoutModule()
 	layout:AddButton(scaleRow, 12, 0)
 	layout.ScaleRow = scaleRow
 	layout.RefreshScaleDisplay = RefreshScaleDisplay
+
+	layout:CreateHeader({val = 'Pet Ring Size:', x = 0, data = 'Text', type = 'FontString', setup = {nil, 'ARTWORK', 'FriendsFont_Large'}})
+	local petRow = CreateFrame('Frame', nil, layout.Child)
+	petRow:SetSize(200, 46)
+	local petBox = CPAPI.CreateFrame('EditBox', '$parentPetRingSize', petRow)
+	petBox:SetAutoFocus(false)
+	petBox:SetFont(CombatLogFont:GetFont())
+	petBox:SetBackdrop(db.Atlas.Backdrops.FullSmall)
+	petBox:SetJustifyH('CENTER')
+	petBox:SetSize(75, 24)
+	petBox:SetPoint('CENTER', petRow, 'CENTER', 0, 0)
+	local petMinus = db.Atlas.GetFutureButton('$parentPetSizeMinus', petRow, nil, nil, 36, 36, true)
+	petMinus:SetPoint('RIGHT', petBox, 'LEFT', -8, 0)
+	petMinus.Label:SetText('-')
+	local petPlus = db.Atlas.GetFutureButton('$parentPetSizePlus', petRow, nil, nil, 36, 36, true)
+	petPlus:SetPoint('LEFT', petBox, 'RIGHT', 8, 0)
+	petPlus.Label:SetText('+')
+	local function RefreshPetSize()
+		petBox:SetText(string.format('%d%%', math.floor((ab.cfg.petRingScale or 1) * 100 + 0.5)))
+	end
+	local function ApplyPetSize(percent)
+		if InCombatLockdown() then RefreshPetSize(); return end
+		ab.cfg.petRingScale = math.max(50, math.min(200, math.floor(percent / 10 + 0.5) * 10)) / 100
+		Bar.Pet:ApplyAppearance(ab.cfg)
+		RefreshPetSize()
+	end
+	petMinus:SetScript('OnClick', function() ApplyPetSize((ab.cfg.petRingScale or 1) * 100 - 10) end)
+	petPlus:SetScript('OnClick', function() ApplyPetSize((ab.cfg.petRingScale or 1) * 100 + 10) end)
+	petBox:SetScript('OnEnterPressed', function(self)
+		local percent = tonumber((self:GetText():gsub('%%', '')))
+		if percent then ApplyPetSize(percent) else RefreshPetSize() end
+		self:ClearFocus()
+	end)
+	petBox:SetScript('OnEscapePressed', function(self) RefreshPetSize(); self:ClearFocus() end)
+	petBox:SetScript('OnShow', RefreshPetSize)
+	RefreshPetSize()
+	layout:AddButton(petRow, 12, 0)
 
 	-- Color header
 	layout:CreateHeader({val = 'Colors:', x = 0, data = 'Text', type = 'FontString', setup = {nil, 'ARTWORK', 'FriendsFont_Large'}})

@@ -70,7 +70,9 @@ function Button:OnEnter()
 		return
 	end
 	local uber = GetCVar('UberTooltips')
-	if ( uber == '0' ) then
+	-- Pet commands are tokens, not spell IDs. Some 3.3.5 clients resolve the
+	-- Follow command's numeric ID as the unrelated Word of Recall (OLD) spell.
+	if ( uber == '0' or self.isToken ) then
 		GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 		local bindingText = GetBindingText(GetBindingKey('BONUSACTIONBUTTON'..self:GetID()))
 		if (bindingText and bindingText ~= '') then
@@ -104,6 +106,22 @@ function Button:StopFlash()
 end
 
 function Button:OnSizeChanged(width, height)
+	if self.isSquareMode then
+		for _, texture in ipairs({self.NormalTexture, self.PushedTexture}) do
+			texture:ClearAllPoints()
+			texture:SetPoint('CENTER', self, 'CENTER', width * (4/45), height * (-2/45))
+			texture:SetSize(width * (52/45), height * (51/45))
+		end
+		for _, texture in ipairs({self.HighlightTexture, self.CheckedTexture}) do
+			texture:ClearAllPoints()
+			texture:SetPoint('CENTER', self, 'CENTER', width * (1/45), 0)
+			texture:SetSize(width * (46/45), height)
+		end
+		self.icon:ClearAllPoints()
+		self.icon:SetPoint('CENTER', self, 'CENTER', 0, 0)
+		self.icon:SetSize(width * (40/45), height * (40/45))
+		return
+	end
 	local normalX, normalY = (width * (46/32)), (height * (46/32))
 	self.NormalTexture:SetSize(normalX, normalY)
 	self.PushedTexture:SetSize(normalX, normalY)
@@ -132,10 +150,21 @@ do
 		Mixin(button, ConsolePortActionButtonMixin)
 
 		button.icon = _G[name..'Icon']
+		button.roundIconPoints = {}
+		for point = 1, button.icon:GetNumPoints() do
+			button.roundIconPoints[point] = {button.icon:GetPoint(point)}
+		end
+		button.roundIconWidth, button.roundIconHeight = button.icon:GetSize()
 		button.AutoCastable = _G[name..'AutoCastable']
 		button.Flash = _G[name..'Flash']
+		button.roundFlashTexture = button.Flash:GetTexture()
 		button.Shine = _G[name..'Shine']
 		button.cooldown = _G[name..'Cooldown'];
+		button.roundCooldownPoints = {}
+		for point = 1, button.cooldown:GetNumPoints() do
+			button.roundCooldownPoints[point] = {button.cooldown:GetPoint(point)}
+		end
+		button.roundCooldownWidth, button.roundCooldownHeight = button.cooldown:GetSize()
 		button.NormalTexture = _G[name..'NormalTexture2']
 
 --		button.Flash:SetMask('Interface\\Minimap\\UI-Minimap-Background')
@@ -186,6 +215,86 @@ do
 	end
 end
 
+-- All dimensions below are local to Pet. Scaling this parent keeps the
+-- portrait, buttons, spacing, hotkeys, and secure selection growth proportional.
+function Pet:ApplyAppearance(cfg)
+	if InCombatLockdown() then
+		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
+	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
+	cfg = cfg or ab.cfg or {}
+	local scale = math.max(0.5, math.min(tonumber(cfg.petRingScale) or 1, 2))
+	self:SetScale(scale)
+	self.isSquareMode = cfg.useSquareButtons and true or false
+	local square = self.isSquareMode
+	local tex = 'Interface\\AddOns\\ConsolePortBar\\Textures\\Button\\'
+	local portraitSize = 64
+	local buttonSize = 40
+	local radius = 60
+	self:SetSize(portraitSize, portraitSize)
+	self.Border:ClearAllPoints()
+	self.Portrait:ClearAllPoints()
+	if square then
+		self.Border:SetTexture(tex .. 'SquareNormal')
+		self.Border:SetPoint('CENTER', self, 'CENTER', portraitSize * (4/45), portraitSize * (-2/45))
+		self.Border:SetSize(portraitSize * (52/45), portraitSize * (51/45))
+		self.Portrait:SetPoint('CENTER', self, 'CENTER', 0, 0)
+		self.Portrait:SetSize(portraitSize * (40/45), portraitSize * (40/45))
+		self.Portrait:SetTexCoord(0.07, 0.93, 0.07, 0.93)
+		self.Shadow:Hide()
+	else
+		self.Border:SetTexture(tex .. 'BigNormal')
+		self.Border:SetAllPoints(self)
+		self.Portrait:SetAllPoints(self)
+		self.Portrait:SetTexCoord(0, 1, 0, 1)
+		self.Shadow:Show()
+	end
+	-- All layouts share the original positions, sizes, and selection growth.
+	-- Minimal/Triple change only the individual elements' square artwork.
+	for i, button in ipairs(self.Buttons) do
+		button.isSquareMode = square
+		button:ClearAllPoints()
+		if i > 2 then
+			local angle = (i + 3) * math.rad(360 / (NUM_PET_ACTION_SLOTS - 2))
+			button:SetPoint('CENTER', self, 'CENTER', radius * math.cos(angle), -radius * math.sin(angle) - 8)
+			button:SetAttribute('pet-normal-size', buttonSize)
+			button:SetAttribute('pet-selected-size', buttonSize * 1.25)
+			button:SetSize(buttonSize, buttonSize)
+		else
+			button:SetPoint(i == 1 and 'BOTTOMLEFT' or 'BOTTOMRIGHT', self, i == 1 and 'BOTTOMLEFT' or 'BOTTOMRIGHT', i == 1 and 4 or -4, -12)
+			button:SetSize(28, 28)
+		end
+		button.NormalTexture:SetTexture(tex .. (square and 'SquareNormal' or 'PetNormal'))
+		button.PushedTexture:SetTexture(tex .. (square and 'SquarePushed' or 'PetPushed'))
+		local highlight = square and (tex .. 'SquareHilite') or 'Interface\\AddOns\\ConsolePort\\Textures\\Button\\Hilite'
+		button.HighlightTexture:SetTexture(highlight)
+		button.CheckedTexture:SetTexture(highlight)
+		button.Flash:SetTexture(square and highlight or button.roundFlashTexture)
+		button.icon:SetTexCoord(square and 0.07 or 0, square and 0.93 or 1, square and 0.07 or 0, square and 0.93 or 1)
+		if not square then
+			button.NormalTexture:ClearAllPoints()
+			button.NormalTexture:SetPoint('CENTER', button, 'CENTER', 0, 0)
+			button.PushedTexture:ClearAllPoints()
+			button.PushedTexture:SetPoint('CENTER', button, 'CENTER', 0, 0)
+			button.HighlightTexture:SetAllPoints(button)
+			button.CheckedTexture:SetAllPoints(button)
+			button.icon:ClearAllPoints()
+			button.icon:SetSize(button.roundIconWidth, button.roundIconHeight)
+			for _, point in ipairs(button.roundIconPoints) do button.icon:SetPoint(unpack(point)) end
+		end
+		button:OnSizeChanged(button:GetWidth(), button:GetHeight())
+		button.cooldown:ClearAllPoints()
+		if square then
+			button.cooldown:SetAllPoints(button.icon)
+		else
+			button.cooldown:SetSize(button.roundCooldownWidth, button.roundCooldownHeight)
+			for _, point in ipairs(button.roundCooldownPoints) do button.cooldown:SetPoint(unpack(point)) end
+		end
+	end
+	self:Update()
+end
+
 Pet:HookScript('OnShow', function(self)
 	self:Update()
 	SetPortraitTexture(self.Portrait, 'pet')
@@ -203,7 +312,9 @@ end)
 
 Pet:SetScript('OnEvent', function(self, event, ...)
 	local arg1 = ...
-	if event == 'PET_BAR_UPDATE' or event == 'PET_SPECIALIZATION_CHANGED' or
+	if event == 'PLAYER_REGEN_ENABLED' then
+		self:ApplyAppearance(ab.cfg)
+	elseif event == 'PET_BAR_UPDATE' or event == 'PET_SPECIALIZATION_CHANGED' or
 		(event == 'UNIT_PET' and arg1 == 'player') or
 		((event == 'UNIT_FLAGS' or event == 'UNIT_AURA') and arg1 == 'pet') or
 		event == 'PLAYER_CONTROL_LOST' or event == 'PLAYER_CONTROL_GAINED' or event == 'PLAYER_FARSIGHT_FOCUS_CHANGED' then
@@ -224,11 +335,17 @@ function Pet:Update()
 		petAutoCastableTexture = petActionButton.AutoCastable
 		petAutoCastShine = petActionButton.Shine
 		local name, subtext, texture, isToken, isActive, autoCastAllowed, autoCastEnabled = GetPetActionInfo(i)
+		local icon = texture
+		if isToken then icon = _G[texture] end
+		icon = icon or [[Interface\AddOns\ConsolePortBar\Textures\ability-empty]]
+		if self.isSquareMode then
+			petActionButton.icon:SetTexture(icon)
+		else
+			SetPortraitToTexture(petActionButton.icon, icon)
+		end
 		if ( not isToken ) then
-		    SetPortraitToTexture(petActionButton.icon, texture or [[Interface\AddOns\ConsolePortBar\Textures\ability-empty]]) 
 			petActionButton.tooltipName = name
 		else 
-			SetPortraitToTexture(petActionButton.icon, _G[texture] or [[Interface\AddOns\ConsolePortBar\Textures\ability-empty]]) 
 			petActionButton.tooltipName = _G[name]
 		end
 		petActionButton.isToken = isToken
@@ -318,8 +435,9 @@ do -- Wheel setup
 				local key, down = ...
 				-----------------------------
 				if BUTTON then
-					BUTTON:SetWidth(40)
-					BUTTON:SetHeight(40)
+					local size = BUTTON:GetAttribute('pet-normal-size') or 40
+					BUTTON:SetWidth(size)
+					BUTTON:SetHeight(size)
 				end
 				-----------------------------
 				if down then
@@ -353,8 +471,9 @@ do -- Wheel setup
 				self:SetAttribute('index', INDEX)
 				BUTTON = BUTTONS[INDEX]
 				if BUTTON then
-					BUTTON:SetWidth(50)
-					BUTTON:SetHeight(50)
+					local size = BUTTON:GetAttribute('pet-selected-size') or 50
+					BUTTON:SetWidth(size)
+					BUTTON:SetHeight(size)
 				end
 				-----------------------------
 			end
@@ -416,8 +535,9 @@ do -- Wheel setup
 				if BUTTON then
 					self:SetAttribute('type', 'macro')
 					self:SetAttribute('macrotext', ('/click %s'):format(BUTTON:GetName()))
-					BUTTON:SetWidth(40)
-					BUTTON:SetHeight(40)
+					local size = BUTTON:GetAttribute('pet-normal-size') or 40
+					BUTTON:SetWidth(size)
+					BUTTON:SetHeight(size)
 					BUTTON = nil
 				end
 				self:ClearBindings()

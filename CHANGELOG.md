@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5 - 2026-10-29
+
+- Add a Pet Ring Size control under Action Bars, adjustable from 50% to 200%.  The setting is retained when switching layouts.
+- Use square pet icons and a square pet frame with Minimal and Triple layouts, preserving the original circular arrangement, relative positions, and sizes.  Other layouts retain their round styling.
+- Fix pet-command tooltips incorrectly displaying unrelated spells such as Word of Recall (OLD).  Pet abilities retain their detailed tooltips.
+- Existing saved settings and bindings remain compatible.
+
 ## 1.0.4 — 2026-10-23
 
 - Fix the controller menu's Leave Group action failing in dungeon-finder groups on 3.3.5 clients without ConfirmOrLeaveLFGParty. Use the supported LeaveParty action when the helper is unavailable, while retaining native confirmation on clients that provide it.

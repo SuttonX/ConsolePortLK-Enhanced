@@ -449,6 +449,7 @@ function Bar:OnLoad(cfg, benign)
     RegisterStateDriver(Bar, 'visibility', visDriver)
 
     -- Pet Driver
+    Bar.Pet:ApplyAppearance(cfg)
     if cfg.hidepet then
         UnregisterStateDriver(Bar.Pet, 'visibility')
         Bar.Pet:Hide()
