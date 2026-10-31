@@ -1,5 +1,9 @@
 # Testing status
 
+## 1.0.6 spell helper
+
+A Lua 5.1 regression test reproduces the original nil-coordinate arithmetic error.  The fix passes missing and partial source/target coordinates, mixed valid and invalid targets, unchanged valid animation offsets, modifier filtering, explicit textures, and zero coordinates.  All 128 Lua files parse.  No separate in-game retest result was reported before publication was requested.
+
 ## 1.0.5 pet ring
 
 The maintainer approved the final build in game.  Lua 5.1 syntax and mocked checks cover scaling, round/square restoration, the original ten-button geometry, secure eight-way selection, attack/follow overrides, combat deferral, percentage controls, and command versus spell tooltips.  These checks do not establish compatibility with every controller or addon combination.

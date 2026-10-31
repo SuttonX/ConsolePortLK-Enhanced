@@ -345,6 +345,10 @@ local function PathCalculateOffset(self, x, y)
 end 
  
 function Helper:OnActionPlaced(actionID, pushTexture)
+	-- Placement is already complete. Only animate when the source is positioned.
+	if not ConsolePortBar or not ConsolePortCursor then return end
+	local tX, tY = ConsolePortCursor:GetCenter()
+	if type(tX) ~= 'number' or type(tY) ~= 'number' then return end
 
 	local currentModifier = ConsolePort:GetCurrentModifier() 
 	local buttons = {} 
@@ -353,13 +357,17 @@ function Helper:OnActionPlaced(actionID, pushTexture)
 		-- since they will have the same action ID at this point as the modified buttons.
 		-- ignore this restriction if the action was pushed automatically (low level auto-assign)
 		if ( ID == actionID ) and ( pushTexture or ( not ( button.isMainButton and currentModifier ~= "" ) ) ) then
-			buttons[button] = true 
+			-- Hidden or not-yet-laid-out buttons can have no center coordinates.
+			local x, y = button:GetCenter()
+			if type(x) == 'number' and type(y) == 'number' then
+				buttons[button] = {x, y}
+			end
 		end
 	end
 
 	local texture = pushTexture or GetActionTexture(actionID) 
 
-	for button in pairs(buttons) do
+	for button, position in pairs(buttons) do
 		local freeIcon 
 		for _, v in pairs(self.iconList) do
 			if v.isFree then
@@ -405,27 +413,25 @@ function Helper:OnActionPlaced(actionID, pushTexture)
 		end
 
 		
-		if(not ConsolePortBar) then return end; -- bugged anims, but kinda works if using ConsolePortBar
 
 		icon.icon:SetTexture(texture)
 		icon.action = actionID
 		
-		local tX, tY = ConsolePortCursor:GetCenter()
 		freeIcon:ClearAllPoints()
 		freeIcon:SetPoint('BOTTOMLEFT', UIParent, tX, tY)
 		freeIcon:SetFrameLevel(ConsolePortCursor:GetFrameLevel() + 1)  
 
 
-		local x, y = button:GetCenter(); 
+		local x, y = position[1], position[2]
 		BTN = button;
-		local v = -(((x - ( tX - 128 or 0) ) * 0.39) - (x * (tonumber(string.format("%.2f", button:GetEffectiveScale())) - 0.60)))  
+		local v = -(((x - (tX - 128) ) * 0.39) - (x * (tonumber(string.format("%.2f", button:GetEffectiveScale())) - 0.60)))
 		local w = 45
 
 		-- w = 0 -------> button:GetEffectiveScale() = 1.30
 		-- w = 45 -------> button:GetEffectiveScale() = 0.70
 
 
-		local oX, oY = (x - ( tX or 0) ) + v, (y - ( tY or 0) - w)    
+		local oX, oY = (x - tX) + v, (y - tY - w)
 		for path in pairs(freeIcon.paths) do  
 			PathCalculateOffset(path, oX, oY)
 		end  

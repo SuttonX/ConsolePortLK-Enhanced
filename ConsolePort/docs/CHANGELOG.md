@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.6 - 2026-10-31
+
+- Fix the spell-binding helper raising an arithmetic error when an action button has no position while placing an ability with the controller.
+- Skip only the placement animation when source or target coordinates are unavailable.  Keep action placement and binding behavior intact, and continue animating other valid matching buttons.
+- Existing saved settings and bindings remain compatible.
+
 ## 1.0.5 - 2026-10-29
 
 - Add a Pet Ring Size control under Action Bars, adjustable from 50% to 200%.  The setting is retained when switching layouts.
