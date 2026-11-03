@@ -84,6 +84,7 @@ do
 	-- Wrath calls this ShapeshiftBarFrame rather than the retail StanceBar.
 		local function GetClassBarOffset()
 			local cfg = ab.cfg
+			if cfg and cfg.activePreset == 'Orthodox' then return -76 end
 			if not cfg or cfg.activePreset ~= 'Crossbar: Minimal' then return 24 end
 			local required = {
 				CP_L_UP = true, CP_L_DOWN = true, CP_L_LEFT = true, CP_L_RIGHT = true,

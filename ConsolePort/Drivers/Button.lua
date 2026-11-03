@@ -26,6 +26,7 @@ function Button:OnMouseDown()
 	self.timer = 0
 	-- simulate button clicks by setting pushed state on focused button
 	if 	(func == 'click' or func == 'action') and click then
+		self.pushedButton = click
 		click:SetButtonState('PUSHED')
 		return
 	end
@@ -34,12 +35,12 @@ function Button:OnMouseDown()
 end
 
 function Button:OnMouseUp()
-	local func = self:GetAttribute('type')
-	local click = self:GetAttribute('clickbutton')
 	self.state = KEY.STATE_UP
-	-- revert simulated button click
-	if 	(func == 'click' or func == 'action') and click then
-		click:SetButtonState('NORMAL')
+	-- Focus or the modifier may change before release. Reset the button
+	-- that was actually pressed rather than the newly focused button.
+	if self.pushedButton then
+		self.pushedButton:SetButtonState('NORMAL')
+		self.pushedButton = nil
 	end
 end
 
@@ -60,6 +61,10 @@ end
 -- Clear button override
 ---------------------------------------------------------------
 function Button:Clear(manualClear)
+	if self.pushedButton then
+		self.pushedButton:SetButtonState('NORMAL')
+		self.pushedButton = nil
+	end
 	self.timer = 0
 	self.state = KEY.STATE_UP
 	if manualClear then
@@ -115,6 +120,7 @@ local keyUpdate = {
 function ConsolePort:SetSecureButton(name, modifier, command)
 	local btn = CreateFrame('Button', name..modifier, ConsolePortButtonHandler, 'SecureActionButtonTemplate, SecureHandlerBaseTemplate')
 	btn:Hide()
+	btn:SetScript('OnHide', Button.Clear)
 	btn.command = command
 	btn.name = name
 	btn.mod = modifier

@@ -1254,8 +1254,14 @@ function Update(self)
 		ActionButtons[self] = nil
 		NonActionButtons[self] = nil
 		self.cooldown:Hide()
-		self:SetChecked(0) 
- 
+		self:SetChecked(0)
+		if self.FakeChecked then self.FakeChecked:SetAlpha(0) end
+		if self.tripleShims then
+			for _, shim in pairs(self.tripleShims) do
+				if shim.FakeChecked then shim.FakeChecked:SetAlpha(0) end
+			end
+		end
+
 		self.isGlowing = false
 		self.isOnCooldown = false
 		self:FadeOut()
@@ -1330,6 +1336,13 @@ function Update(self)
 end
  
 function UpdateButtonState(self)
+	-- A previously active modifier shim must not keep its checked overlay
+	-- when the active action is now rendered by a different layer.
+	if self.tripleShims then
+		for _, shim in pairs(self.tripleShims) do
+			if shim.FakeChecked then shim.FakeChecked:SetAlpha(0) end
+		end
+	end
     if self:IsCurrentlyActive() or self:IsAutoRepeat() then
         self:SetChecked(1) 
         if self.FakeChecked then 
@@ -1611,19 +1624,11 @@ function UpdateTooltip(self)
 end 
 
 function UpdateNewAction(self)
-	-- special handling for "New Action" markers
-	if(self.isSquareMode) then
-		self.NewActionTexture:Hide();
-		return
-	end
-
+	-- This backport has no new-action marker tracking. An unconditional
+	-- ten-second fade on every refresh masquerades as a stuck hover highlight.
 	if self.NewActionTexture then
-		if self._state_type == "action" then -- and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
-			self.NewActionTexture:Show()
-			UIFrameFadeOut(self.NewActionTexture, 10, 1, 0) 
-		else
-			self.NewActionTexture:Hide()
-		end
+		UIFrameFadeRemoveFrame(self.NewActionTexture)
+		self.NewActionTexture:Hide()
 	end
 end
 
@@ -1711,18 +1716,40 @@ end
 
 -----------------------------------------------------------
 --- Spell Button
+-- 3.3.5 has no FindSpellBookSlotBySpellID helper. Resolve a real
+-- spellbook slot for APIs whose numeric argument is a book index.
+local function FindSpellBookSlot(spellID)
+	if FindSpellBookSlotBySpellID then return FindSpellBookSlotBySpellID(spellID) end
+	for tab = 1, GetNumSpellTabs() do
+		local _, _, offset, count = GetSpellTabInfo(tab)
+		for slot = offset + 1, offset + count do
+			local link = GetSpellLink(slot, BOOKTYPE_SPELL or "spell")
+			if link and tonumber(link:match("spell:(%d+)")) == tonumber(spellID) then return slot end
+		end
+	end
+end
+
 Spell.HasAction               = function(self) return true end
 Spell.GetActionText           = function(self) return "" end
 Spell.GetTexture              = function(self) return GetSpellTexture(self._state_action) end
-Spell.GetCount                = function(self) return GetSpellCount(self._state_action) end
+Spell.GetCount                = function(self) return GetSpellCount and GetSpellCount(self._state_action) or 0 end
 Spell.GetCooldown             = function(self) return GetSpellCooldown(self._state_action) end
-Spell.IsAttack                = function(self) return IsAttackSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
+Spell.IsAttack = function(self)
+	local slot = FindSpellBookSlot(self._state_action)
+	if slot then return IsAttackSpell(slot, "spell") end
+end
 Spell.IsEquipped              = function(self) return nil end
 Spell.IsCurrentlyActive       = function(self) return IsCurrentSpell(self._state_action) end
-Spell.IsAutoRepeat            = function(self) return IsAutoRepeatSpell(FindSpellBookSlotBySpellID(self._state_action), "spell") end -- needs spell book id as of 4.0.1.13066
+Spell.IsAutoRepeat = function(self)
+	local slot = FindSpellBookSlot(self._state_action)
+	if slot then return IsAutoRepeatSpell(slot, "spell") end
+end
 Spell.IsUsable                = function(self) return IsUsableSpell(self._state_action) end
 Spell.IsConsumableOrStackable = function(self) return IsConsumableSpell(self._state_action) end
-Spell.IsUnitInRange           = function(self, unit) return IsSpellInRange(FindSpellBookSlotBySpellID(self._state_action), "spell", unit) end -- needs spell book id as of 4.0.1.13066
+Spell.IsUnitInRange = function(self, unit)
+	local slot = FindSpellBookSlot(self._state_action)
+	if slot then return IsSpellInRange(slot, "spell", unit) end
+end
 Spell.SetTooltip              = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId              = function(self) return self._state_action end
 

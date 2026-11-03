@@ -148,11 +148,8 @@ local Menu =  UI:CreateFrame('Frame', an, IsCustomClient and EscapeMenu or GameM
 						self:RegisterEvent('PLAYER_LEVEL_UP')
 						self:RegisterEvent('UPDATE_BINDINGS')
 						self:RegisterEvent('PLAYER_TALENT_UPDATE')
-						self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED')
-						self:RegisterEvent('HONOR_LEVEL_UPDATE')
-						self:RegisterEvent('HONOR_PRESTIGE_UPDATE')
-						self:RegisterEvent('PLAYER_PVP_TALENT_UPDATE')
-						self:RegisterEvent('PLAYER_CHARACTER_UPGRADE_TALENT_COUNT_CHANGED') 
+						self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+						self:RegisterEvent('CHARACTER_POINTS_CHANGED')
 					end,
 					OnEvent = function(self, event, ...)
 						self.tooltipText = nil
@@ -165,7 +162,7 @@ local Menu =  UI:CreateFrame('Frame', an, IsCustomClient and EscapeMenu or GameM
 								self.tooltipText = TALENT_MICRO_BUTTON_TALENT_TUTORIAL
 								self:SetPulse(true)
 							end
-						elseif ( event == 'PLAYER_SPECIALIZATION_CHANGED' ) then
+						elseif ( event == 'ACTIVE_TALENT_GROUP_CHANGED' or event == 'CHARACTER_POINTS_CHANGED' ) then
 							self:EvaluateAlertVisibility()
 						elseif ( event == 'PLAYER_TALENT_UPDATE' or event == 'NEUTRAL_FACTION_SELECT_RESULT' or
 							event == 'HONOR_LEVEL_UPDATE' or event == 'HONOR_PRESTIGE_UPDATE' or event == 'PLAYER_PVP_TALENT_UPDATE' ) then

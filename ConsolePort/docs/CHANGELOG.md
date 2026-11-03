@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.8 - 2026-11-03
+
+- Restore curved satellite placement for round layouts while preserving square-family layouts and Enhanced cooldown/form behavior.
+- Fix persistent action highlights, including empty-slot overlays and UI presses whose focus changes before release.
+- Match equipped-item indicators to square buttons instead of displaying a green circle over the icon.
+- Update Crossbar Triple shoulder positions: LB (-200, 205), RB (200, 205), L1 (-250, 205), and R1 (250, 205).  Apply once to existing saved profiles, retaining unchecked buttons and later user edits.
+- Adjust Minimal defaults and saved positions for a half-unit center satellite gap.  The one-time update preserves subsequent customization.
+- Lower the stance/form/totem bar by 100 units in Orthodox only.  Default Roleplay L1/R1 to unchecked while preserving existing selections.
+- Fix bag-menu inventory-token comparisons and missing stack data, add stock Wrath spellbook lookup, and correct menu RGB values, loot animation/quality styling, disenchant hints, and talent event registrations.
+- Preserve SavedVariables and per-layout custom positions.  Reload the UI after updating.
+
 ## 1.0.7 - 2026-11-03
 
 - Restore the native class bar for warrior stances, druid forms, death knight presences, and paladin auras, centered above the controller bars.

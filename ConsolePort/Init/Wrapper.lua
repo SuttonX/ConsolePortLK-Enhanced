@@ -113,7 +113,9 @@ function CPAPI:GetItemLevelColor(...)
 	if GetItemLevelColor then
 		return GetItemLevelColor(...)
 	end
-	return RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+	local color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
+	if color then return color.r, color.g, color.b end
+	return 1, 1, 1
 end
 
 function CPAPI:GetAverageItemLevel(...)

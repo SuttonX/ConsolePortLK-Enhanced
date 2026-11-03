@@ -479,6 +479,28 @@ function Bar:OnLoad(cfg, benign)
     -- Core Layout Processing
     cfg.layout = cfg.layout or ab:GetDefaultButtonLayout()
     local layout = cfg.layout
+    -- Carry the revised Triple shoulder positions into existing saved profiles.
+    -- Do not recreate unchecked buttons or overwrite later position edits.
+    if cfg.activePreset == 'Crossbar: Triple' and not cfg.tripleShoulderPositionsVersion then
+        local positions = {CP_T1 = -200, CP_T2 = 200, CP_T3 = -250, CP_T4 = 250}
+        for binding, x in pairs(positions) do
+            local entry = layout[binding]
+            if entry then entry.point = {'BOTTOM', x, 205} end
+        end
+        cfg.tripleShoulderPositionsVersion = 1
+    end
+    -- Apply the half-unit center gap once to saved Minimal profiles.
+    if cfg.activePreset == 'Crossbar: Minimal' and (cfg.minimalCenterGapVersion or 0) < 3 then
+        local version = cfg.minimalCenterGapVersion or 0
+        local shift = version == 2 and -0.25 or (version == 1 and -0.50 or 9.95)
+        for _, entry in pairs(layout) do
+            local point = entry.point
+            if point and point[1] == 'BOTTOM' and type(point[2]) == 'number' and point[2] ~= 0 then
+                point[2] = point[2] + (point[2] < 0 and -shift or shift)
+            end
+        end
+        cfg.minimalCenterGapVersion = 3
+    end
     local hideIcons = cfg.hideIcons
     local hideModifiers = cfg.hideModifiers
     local classicBorders = cfg.classicBorders

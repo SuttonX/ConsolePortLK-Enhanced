@@ -1,6 +1,7 @@
 local _, L = ...
 local UI, Control, db = ConsolePortUI:GetEssentials()
 local KEY = db.KEY
+local CPAPI = db.CPAPI
 local LootButton = {}
 L.LootButton = LootButton
 
@@ -42,7 +43,7 @@ function LootButton:OnEnter()
 			Control:AddHint(KEY.SQUARE, NEED)
 		end
 		if self.canDisenchant then
-			Control:AddHint(KEY.TRIANGLE, ROLL_DISENCHANT)
+			Control:AddHint(KEY.CIRCLE, ROLL_DISENCHANT)
 		end
 		Control:AddHint(KEY.TRIANGLE, PASS)
 		GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
@@ -87,10 +88,12 @@ function LootButton:Animate()
 end
 
 function LootButton:UpdateItemQuality(quality)
-	local color = ITEM_QUALITY_COLORS[quality]
+	local color = ITEM_QUALITY_COLORS[quality] or ITEM_QUALITY_COLORS[1]
 	self.Label:SetVertexColor(color.r, color.g, color.b)
 	self.HighlightTexture:SetVertexColor(color.r, color.g, color.b)
-	self.Mask:SetAtlas(LOOT_BORDER_BY_QUALITY[quality] or LOOT_BORDER_BY_QUALITY[LE_ITEM_QUALITY_UNCOMMON])
+	-- Stock Wrath textures have no SetAtlas method or loot-border atlas table.
+	-- Keep the template's bundled mask and tint it to the item quality.
+	if self.Mask then self.Mask:SetVertexColor(color.r, color.g, color.b) end
 end
 
 function LootButton:UpdateTimer(rollID)

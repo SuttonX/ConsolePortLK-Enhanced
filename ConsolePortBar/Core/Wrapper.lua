@@ -274,7 +274,20 @@ function WrapperMixin:SetSize(new)
 				local spread = (mod == 'CTRL-SHIFT-') and WING_SPREAD_AXIS or WING_SPREAD_DIAG
 				
 				local pT = mods[mod] and mods[mod][button.orientation]
-				if pT then
+				if not (preset and preset.useSquareButtons) then
+					-- Round layouts retain the upstream curved satellite geometry.
+					-- Minimal's smaller frames and axis-centered spread are square-only.
+					b, t = new * (46 / 64), new * (58 / 64)
+					if mod == 'CTRL-SHIFT-' then t = t * 0.9 end
+					if pT then
+						local p, rel, x, y = unpack(pT)
+						local roundSpread = mod == 'CTRL-SHIFT-' and 0.4 or 0.6
+						local axisRatio = mod == 'CTRL-SHIFT-' and (21 / ofsB) or 1
+						button:ClearAllPoints()
+						button:SetPoint(p, main, rel, x * scale * roundSpread * axisRatio, y * scale * roundSpread * axisRatio)
+						button:Show()
+					end
+				elseif pT then
 					local p, rel, x, y = unpack(pT)
 					-- v122: square Minimal wings use axis-centered anchors with wider lateral spacing so their
 					-- tangential angle is actually controllable. Keep the v117 outward
@@ -483,6 +496,12 @@ function WrapperMixin:SetClassicBorders(enabled)
             button.NormalTexture:SetTexCoord(0, 1, 0, 1)
             button.NormalTexture:SetSize(bw * (52/45), bw * (51/45))
 
+            -- Equipped items use the same square edge as the selected layout.
+            button.Border:ClearAllPoints()
+            button.Border:SetAllPoints(button.NormalTexture)
+            button.Border:SetTexture(TEX:format("SquareNormal"))
+            button.Border:SetTexCoord(0, 1, 0, 1)
+
             button.PushedTexture:ClearAllPoints()
             button.PushedTexture:SetPoint("CENTER", button, "CENTER", bw * (4/45), bw * (-2/45))
             button.PushedTexture:SetTexture(isTriple and TEX:format("SquareNormal") or TEX:format("SquarePushed"))
@@ -561,6 +580,15 @@ function WrapperMixin:SetClassicBorders(enabled)
             ct:SetSize(bw, bw)
             ct:ClearAllPoints()
             ct:SetPoint("CENTER", button, "CENTER", 0, 0)
+
+            button.Border:ClearAllPoints()
+            button.Border:SetAllPoints(button)
+            button.Border:SetTexture(buttonTextures[mod].border)
+            button.Border:SetTexCoord(0, 1, 0, 1)
+            if not isMain then
+                local coords = modcoords[mod] and modcoords[mod][button.orientation or "down"]
+                if coords then button.Border:SetTexCoord(unpack(coords)) end
+            end
 
             local iconSize = bw
             button.icon:ClearAllPoints()

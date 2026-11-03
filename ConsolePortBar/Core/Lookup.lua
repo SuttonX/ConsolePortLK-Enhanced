@@ -175,6 +175,9 @@ function ab:GetReticleSpellManifest()
 end
 
 function ab:GetPresets()
+	local roleplayLayout = ab:GetDefaultButtonLayout()
+	roleplayLayout.CP_T3.hidden = true
+	roleplayLayout.CP_T4.hidden = true
 	return {
 		Default = ab:GetDefaultSettings(),
 		Orthodox = {
@@ -212,9 +215,10 @@ function ab:GetPresets()
 			enablecooldowntext = true,
 			showmodifiercooldowns = true,
 			hiddenbarcooldowns = '10',
-			layout = ab:GetDefaultButtonLayout(),
+			layout = roleplayLayout,
 		},
 		["Crossbar: Minimal"] = {
+			minimalCenterGapVersion = 3,
 			scale = 1,
 			width = 1100,
 			watchbars = true,
@@ -227,32 +231,33 @@ function ab:GetPresets()
 			layout = {
 				-- RIGHT CLUSTER (Face Buttons)
 				-- Base Y increased to 50 to clear the EXP bar
-				CP_R_LEFT    = {dir = 'left',  point = {'BOTTOM',  100, 75}, size = 45}, 
-				CP_R_RIGHT   = {dir = 'right', point = {'BOTTOM',  200, 75}, size = 45}, 
-				CP_R_UP      = {dir = 'up',    point = {'BOTTOM',  150, 100}, size = 45}, 
-				CP_R_DOWN    = {dir = 'down',  point = {'BOTTOM',  150, 50}, size = 45}, 
-				
+				CP_R_LEFT    = {dir = 'left',  point = {'BOTTOM',  109.95, 75}, size = 45},
+				CP_R_RIGHT   = {dir = 'right', point = {'BOTTOM',  209.95, 75}, size = 45},
+				CP_R_UP      = {dir = 'up',    point = {'BOTTOM',  159.95, 100}, size = 45},
+				CP_R_DOWN    = {dir = 'down',  point = {'BOTTOM',  159.95, 50}, size = 45},
+
 				-- Actual bumpers only. Modifier-only trigger entries are intentionally
 				-- omitted so skipped L1/R1-style controls do not reappear as bar buttons.
 				-- LB (CP_T1) belongs on the left; RB (CP_T2) belongs on the right.
-				CP_T1        = {dir = 'down',  point = {'BOTTOM',  -30, 50}, size = 45},
+				CP_T1        = {dir = 'down',  point = {'BOTTOM',  -39.95, 50}, size = 45},
 				-- v143: modifier-only shoulder controls retain the official rc2
 				-- Minimal geometry even while unchecked. Checking one for the first
 				-- time therefore has real preset values instead of 64/CENTER/0/0.
-				CP_T3        = {dir = 'up',    point = {'BOTTOM',  -30, 100}, size = 45, hidden = true},
-				CP_T4        = {dir = 'up',    point = {'BOTTOM',   30, 100}, size = 45, hidden = true},
+				CP_T3        = {dir = 'up',    point = {'BOTTOM',  -39.95, 100}, size = 45, hidden = true},
+				CP_T4        = {dir = 'up',    point = {'BOTTOM',   39.95, 100}, size = 45, hidden = true},
 
 				-- LEFT CLUSTER (D-Pad)
-				CP_L_LEFT    = {dir = 'left',  point = {'BOTTOM', -200, 75}, size = 45}, 
-				CP_L_RIGHT   = {dir = 'right', point = {'BOTTOM', -100, 75}, size = 45}, 
-				CP_L_UP      = {dir = 'up',    point = {'BOTTOM', -150, 100}, size = 45}, 
-				CP_L_DOWN    = {dir = 'down',  point = {'BOTTOM', -150, 50}, size = 45}, 
-				
-				CP_T2        = {dir = 'down',  point = {'BOTTOM',   30, 50}, size = 45}, 
+				CP_L_LEFT    = {dir = 'left',  point = {'BOTTOM', -209.95, 75}, size = 45},
+				CP_L_RIGHT   = {dir = 'right', point = {'BOTTOM', -109.95, 75}, size = 45},
+				CP_L_UP      = {dir = 'up',    point = {'BOTTOM', -159.95, 100}, size = 45},
+				CP_L_DOWN    = {dir = 'down',  point = {'BOTTOM', -159.95, 50}, size = 45},
+
+				CP_T2        = {dir = 'down',  point = {'BOTTOM',   39.95, 50}, size = 45},
 			},
-		}, 
+		},
 
 		["Crossbar: Triple"] = {
+			tripleShoulderPositionsVersion = 1,
 			scale = 1,
 			width = 1100,
 			watchbars = true,
@@ -331,10 +336,10 @@ function ab:GetPresets()
 
 
 				-- v115 retail-reference order: LB, LT, RT, RB (outer bumpers, inner triggers).
-				CP_T1 = {point = {'BOTTOM', -75, 215}, size=45, scale=0.8, static=true}, -- LB
-				CP_T3 = {point = {'BOTTOM', -25, 215}, size=45, scale=0.8, static=true, hidden=true}, -- LT visual carrier
-				CP_T4 = {point = {'BOTTOM',  25, 215}, size=45, scale=0.8, static=true, hidden=true}, -- RT visual carrier
-				CP_T2 = {point = {'BOTTOM',  75, 215}, size=45, scale=0.8, static=true}, -- RB
+				CP_T1 = {point = {'BOTTOM', -200, 205}, size=45, scale=0.8, static=true}, -- LB
+				CP_T3 = {point = {'BOTTOM', -250, 205}, size=45, scale=0.8, static=true, hidden=true}, -- optional L1
+				CP_T4 = {point = {'BOTTOM', 250, 205}, size=45, scale=0.8, static=true, hidden=true}, -- optional R1
+				CP_T2 = {point = {'BOTTOM', 200, 205}, size=45, scale=0.8, static=true}, -- RB
 
 				-- CENTER DIAMOND (NOMOD/BOTH) - Stays at 0
 				CP_L_UP           = {point={'BOTTOM', -75, 100}, size=45},

@@ -1,5 +1,11 @@
 # Testing status
 
+## 1.0.8 layouts and compatibility audit
+
+Publication was requested after the maintainer's layout feedback.  Lua 5.1 parsing, XML well-formedness, declared file paths, package integrity, and the callback/UI regressions pass.  tests/audit-compat.py checks production code for migrated and later-customized positions, preset switching, pressed-state cleanup, empty overlays, equipped styling, inventory tokens/cache misses, stock spellbook lookup, class-bar offsets, menu RGB values, and loot-menu updates.
+
+These checks do not establish every gameplay path or combat/vehicle transition was exercised in game.  Existing retail-era XML metadata findings and priority client checks are documented in tests/AUDIT-335.md.  Keep SavedVariables and use /reload after updating.
+
 ## 1.0.7 class bars
 
 The maintainer approved the final class-bar build for publication after in-game layout feedback.  Mock checks cover Minimal button subsets and additional-button detection, other layouts, totem centering and spacing, action pages, summon/recall visibility, combat deferral, empty bars, and vehicle hiding.  Lua 5.1 syntax checks pass.  This does not establish every class, talent, vehicle, or addon combination was separately tested in game.
