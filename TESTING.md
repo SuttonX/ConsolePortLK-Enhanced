@@ -1,5 +1,9 @@
 # Testing status
 
+## 1.0.7 class bars
+
+The maintainer approved the final class-bar build for publication after in-game layout feedback.  Mock checks cover Minimal button subsets and additional-button detection, other layouts, totem centering and spacing, action pages, summon/recall visibility, combat deferral, empty bars, and vehicle hiding.  Lua 5.1 syntax checks pass.  This does not establish every class, talent, vehicle, or addon combination was separately tested in game.
+
 ## 1.0.6 spell helper
 
 A Lua 5.1 regression test reproduces the original nil-coordinate arithmetic error.  The fix passes missing and partial source/target coordinates, mixed valid and invalid targets, unchanged valid animation offsets, modifier filtering, explicit textures, and zero coordinates.  All 128 Lua files parse.  No separate in-game retest result was reported before publication was requested.

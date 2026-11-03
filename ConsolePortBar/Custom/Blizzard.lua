@@ -24,7 +24,6 @@ do
 		MainMenuBarMaxLevelBar,
 		VehicleMenuBar,
 		BonusActionBarFrame,
-		MultiCastActionBarFrame,
 		MultiBarLeft,
 		MultiBarRight,
 		MultiBarBottomLeft,
@@ -54,6 +53,7 @@ do
 	UIPARENT_MANAGED_FRAME_POSITIONS['BonusActionBar'] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS['ShapeshiftBarFrame'] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS['StanceBarFrame'] = nil
+	UIPARENT_MANAGED_FRAME_POSITIONS['MultiCastActionBarFrame'] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS['PossessBarFrame'] = nil
 	UIPARENT_MANAGED_FRAME_POSITIONS['PETACTIONBAR_YPOS'] = nil
 
@@ -73,13 +73,142 @@ do
 	-------------------------------------------
 
 	for _, bar in pairs({
-		ShapeshiftBarFrame,
-		StanceBarFrame,
 		PossessBarFrame,
 		PetActionBarFrame	}) do
 		bar:UnregisterAllEvents()
 		bar:SetParent(UIHider)
 		bar:Hide()
+	end
+
+	-- Like current ConsolePort, retain Blizzard's class buttons and event handling.
+	-- Wrath calls this ShapeshiftBarFrame rather than the retail StanceBar.
+		local function GetClassBarOffset()
+			local cfg = ab.cfg
+			if not cfg or cfg.activePreset ~= 'Crossbar: Minimal' then return 24 end
+			local required = {
+				CP_L_UP = true, CP_L_DOWN = true, CP_L_LEFT = true, CP_L_RIGHT = true,
+				CP_R_UP = true, CP_R_DOWN = true, CP_R_LEFT = true, CP_R_RIGHT = true,
+				CP_T1 = true, CP_T2 = true,
+			}
+			for id, entry in pairs(cfg.layout or {}) do
+				if not entry.hidden then
+					if not required[id] then return 24 end
+				end
+			end
+			return -5
+		end
+	local stanceBar = ShapeshiftBarFrame or StanceBarFrame
+	if stanceBar then
+		local function PositionClassBar()
+			if InCombatLockdown() then
+				stanceBar:RegisterEvent('PLAYER_REGEN_ENABLED')
+				return
+			end
+			stanceBar:UnregisterEvent('PLAYER_REGEN_ENABLED')
+			stanceBar:SetParent(UIParent)
+			stanceBar:ClearAllPoints()
+			stanceBar:SetPoint('BOTTOM', Bar, 'TOP', 0, GetClassBarOffset())
+			local width = 20
+			for i = 1, GetNumShapeshiftForms() do
+				local button = _G['ShapeshiftButton' .. i] or _G['StanceButton' .. i]
+				if button then
+					-- The icon includes Blizzard's inner edge. Suppress only the
+					-- oversized normal overlay that draws the second outer border.
+					local normal = button:GetNormalTexture()
+					if normal then normal:SetAlpha(0) end
+					button:ClearAllPoints()
+					if i == 1 then
+						button:SetPoint('BOTTOMLEFT', stanceBar, 'BOTTOMLEFT', 10, 3)
+					else
+						local previous = _G['ShapeshiftButton' .. (i - 1)] or _G['StanceButton' .. (i - 1)]
+						button:SetPoint('LEFT', previous, 'RIGHT', 1.5, 0)
+					end
+					width = width + button:GetWidth() + (i > 1 and 1.5 or 0)
+				end
+			end
+			stanceBar:SetWidth(width)
+			for _, name in ipairs({'ShapeshiftBarLeft', 'ShapeshiftBarMiddle', 'ShapeshiftBarRight'}) do
+				if _G[name] then _G[name]:SetTexture(nil) end
+			end
+		end
+		stanceBar:HookScript('OnEvent', function(_, event)
+			if event == 'PLAYER_ENTERING_WORLD' or event == 'UPDATE_SHAPESHIFT_FORMS'
+				or event == 'PLAYER_REGEN_ENABLED' then
+				PositionClassBar()
+			end
+		end)
+		hooksecurefunc(Bar, 'OnLoad', PositionClassBar)
+		PositionClassBar()
+		-- Refresh native visibility, icons, active state, usability, and cooldowns.
+		if ShapeshiftBar_Update then
+			hooksecurefunc('ShapeshiftBar_Update', PositionClassBar)
+			if not InCombatLockdown() then ShapeshiftBar_Update() end
+		end
+	end
+
+
+	-- Wrath's shaman bar retains native spell selection, pages, and flyouts.
+	local _, playerClass = UnitClass('player')
+	local totemBar = playerClass == 'SHAMAN' and MultiCastActionBarFrame
+	if totemBar then
+		-- The native slide animation anchors to MainMenuBar on every update.
+		-- Keep its show/hide decisions, but apply them instantly at our anchor.
+		totemBar:SetScript('OnUpdate', nil)
+		local function PositionTotemBar()
+			if InCombatLockdown() then
+				totemBar:RegisterEvent('PLAYER_REGEN_ENABLED')
+				return
+			end
+			totemBar:UnregisterEvent('PLAYER_REGEN_ENABLED')
+			totemBar:SetParent(UIParent)
+			totemBar:ClearAllPoints()
+			totemBar:SetPoint('BOTTOM', Bar, 'TOP', 0, GetClassBarOffset())
+			local x, gap = 10, 1.5
+			local function Place(button)
+				button:ClearAllPoints()
+				button:SetPoint('BOTTOMLEFT', totemBar, 'BOTTOMLEFT', x, 3)
+				x = x + button:GetWidth() + gap
+				local normal = button:GetNormalTexture()
+				if normal then normal:SetAlpha(0) end
+			end
+			if MultiCastSummonSpellButton:IsShown() then Place(MultiCastSummonSpellButton) end
+			local slots = totemBar.numActiveSlots or 0
+			for i = 1, slots do
+				local slot = _G['MultiCastSlotButton' .. i]
+				Place(slot)
+				for page = 1, NUM_MULTI_CAST_PAGES do
+					local button = _G['MultiCastActionButton' .. ((page - 1) * NUM_MULTI_CAST_BUTTONS_PER_PAGE + i)]
+					button:ClearAllPoints()
+					button:SetPoint('CENTER', slot, 'CENTER', 0, 0)
+					local normal = button:GetNormalTexture()
+					if normal then normal:SetAlpha(0) end
+				end
+			end
+			if MultiCastRecallSpellButton:IsShown() then Place(MultiCastRecallSpellButton) end
+			totemBar:SetWidth(math.max(20, x - gap + 10))
+			if slots > 0 and not UnitHasVehicleUI('player') then
+				totemBar:Show()
+				totemBar.state = 'top'
+			else
+				totemBar:Hide()
+				totemBar.state = 'bottom'
+			end
+			totemBar.mode = 'none'
+			totemBar.completed = true
+		end
+		totemBar:HookScript('OnEvent', PositionTotemBar)
+		hooksecurefunc(Bar, 'OnLoad', PositionTotemBar)
+		hooksecurefunc('MultiCastActionBarFrame_Update', PositionTotemBar)
+		hooksecurefunc('ShowMultiCastActionBar', PositionTotemBar)
+		hooksecurefunc('HideMultiCastActionBar', function()
+			if InCombatLockdown() then
+				totemBar:RegisterEvent('PLAYER_REGEN_ENABLED')
+			else
+				totemBar:Hide()
+				totemBar.state, totemBar.mode = 'bottom', 'none'
+			end
+		end)
+		MultiCastActionBarFrame_Update(totemBar)
 	end
 
 	-------------------------------------------

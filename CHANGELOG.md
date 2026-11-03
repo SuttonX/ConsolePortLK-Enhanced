@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.7 - 2026-11-03
+
+- Restore the native class bar for warrior stances, druid forms, death knight presences, and paladin auras, centered above the controller bars.
+- Restore the shaman totem bar at the same anchor, retaining native totem selection, pages, flyouts, and summon/recall controls.  Replace the native slide positioning with instant placement.
+- Tighten class-bar button spacing to 1.5 units across all layouts.  Preserve Blizzard's inner icon edge and native highlights while hiding the extra outer border overlay.
+- Use a -5 vertical offset for Minimal when only the directional, face, and two bumper buttons are enabled, including any subset of those buttons.  Additional enabled buttons or other layouts use +24.
+- Keep native button sizes and existing saved settings.  Position changes defer until combat ends.
+
 ## 1.0.6 - 2026-10-31
 
 - Fix the spell-binding helper raising an arithmetic error when an action button has no position while placing an ability with the controller.

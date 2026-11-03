@@ -80,6 +80,7 @@ These features and improvements build on the original ConsolePortLK backport.
 
 ### New features
 
+- **Class bars:** native stance, form, presence, aura, and shaman totem controls appear centered above the controller bars, with compact spacing and layout-aware positioning.  Native button sizes, cooldowns, and tooltips are retained.
 - **Pet-ring size and styling:** adjust Pet Ring Size from 50% to 200% under Action Bars.  Minimal and Triple use square icons and a square pet frame with the original circular arrangement and proportions; other layouts retain round styling.
 - **Cooldown satellites on every layout except Triple:** abilities on inactive modifier bars can appear while cooling down, without holding those modifiers. Triple retains its permanently visible modifier bars.
 - **Inactive-bar cooldown controls:** choose up to one hour, ten minutes, or five minutes remaining, or turn these displays off. Short global cooldowns are excluded.
